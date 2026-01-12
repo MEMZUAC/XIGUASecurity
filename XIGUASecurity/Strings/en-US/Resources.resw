@@ -1,0 +1,1690 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="MainWindow_Nav_Home.Content" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Button_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Button_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="MainWindow_Nav_Security.Content" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SecurityPage_PathText_Default" xml:space="preserve">
+    <value>Scan mode: Unspecified</value>
+  </data>
+  <data name="SecurityPage_ScanItem_System" xml:space="preserve">
+    <value>System critical areas</value>
+  </data>
+  <data name="SecurityPage_ScanItem_Memory" xml:space="preserve">
+    <value>Memory processes</value>
+  </data>
+  <data name="SecurityPage_ScanItem_Startup" xml:space="preserve">
+    <value>Startup items</value>
+  </data>
+  <data name="SecurityPage_ScanItem_UserDocs" xml:space="preserve">
+    <value>User documents</value>
+  </data>
+  <data name="SecurityPage_SelectFolder_Title" xml:space="preserve">
+    <value>Select folder</value>
+  </data>
+  <data name="SecurityPage_SelectFile_Title" xml:space="preserve">
+    <value>Select file</value>
+  </data>
+  <data name="SecurityPage_GetFailed_Text" xml:space="preserve">
+    <value>Get Failed</value>
+  </data>
+  <data name="SecurityPage_ScanStatusHeader.Text" xml:space="preserve">
+    <value>Scan Status</value>
+  </data>
+  <data name="SecurityPage_CurrentScanAreaText.Text" xml:space="preserve">
+    <value>Ready to scan</value>
+  </data>
+  <data name="SecurityPage_ScanProgressDetailText.Text" xml:space="preserve">
+    <value>Waiting for user to choose scan type</value>
+  </data>
+  <data name="SecurityPage_ProgressHeader.Text" xml:space="preserve">
+    <value>Scan Progress</value>
+  </data>
+  <data name="SecurityPage_PathText.Text" xml:space="preserve">
+    <value>Select scan target</value>
+  </data>
+  <data name="SecurityPage_BackToVirusListButtonText.Text" xml:space="preserve">
+    <value>View list</value>
+  </data>
+  <data name="SecurityPage_PauseScanButtonText.Text" xml:space="preserve">
+    <value>Pause scan</value>
+  </data>
+  <data name="SecurityPage_ResumeScanButtonText.Text" xml:space="preserve">
+    <value>Resume scan</value>
+  </data>
+  <data name="SecurityPage_ScanButtonText.Text" xml:space="preserve">
+    <value>Start scan</value>
+  </data>
+  <data name="SecurityPage_ScanMenu_Quick.Text" xml:space="preserve">
+    <value>Quick scan</value>
+  </data>
+  <data name="SecurityPage_ScanMenu_Full.Text" xml:space="preserve">
+    <value>Full scan</value>
+  </data>
+  <data name="SecurityPage_ScanMenu_File.Text" xml:space="preserve">
+    <value>File scan</value>
+  </data>
+  <data name="SecurityPage_ScanMenu_Folder.Text" xml:space="preserve">
+    <value>Folder scan</value>
+  </data>
+  <data name="SecurityPage_ScanMenu_More.Text" xml:space="preserve">
+    <value>More scan</value>
+  </data>
+  <data name="SecurityPage_MenuItem_Details.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="SecurityPage_MenuItem_Delete.Text" xml:space="preserve">
+    <value>Delete file</value>
+  </data>
+  <data name="SecurityPage_NoEngine_Title" xml:space="preserve">
+    <value>No scan engine selected</value>
+  </data>
+  <data name="SecurityPage_NoEngine_Content" xml:space="preserve">
+    <value>Please go to Settings - Scan Engine and select at least one engine.</value>
+  </data>
+  <data name="Button_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SecurityPage_More_BrowseFolder" xml:space="preserve">
+    <value>Browse folder</value>
+  </data>
+  <data name="SecurityPage_More_BrowseFile" xml:space="preserve">
+    <value>Browse file</value>
+  </data>
+  <data name="SecurityPage_More_RemoveItem" xml:space="preserve">
+    <value>Remove item</value>
+  </data>
+  <data name="SecurityPage_More_ClearAll" xml:space="preserve">
+    <value>Clear all</value>
+  </data>
+  <data name="SecurityPage_MoreScan_Title" xml:space="preserve">
+    <value>More scan</value>
+  </data>
+  <data name="SecurityPage_StartScanButton" xml:space="preserve">
+    <value>Start scan</value>
+  </data>
+  <data name="SecurityPage_DuplicatePath_Title" xml:space="preserve">
+    <value>Duplicate path</value>
+  </data>
+  <data name="SecurityPage_DuplicatePath_Content" xml:space="preserve">
+    <value>The path is already in the list: {0}</value>
+  </data>
+  <data name="SecurityPage_SouXiao_InitFailed_Title" xml:space="preserve">
+    <value>Cannot initialize SouXiaoEngine</value>
+  </data>
+  <data name="SecurityPage_SouXiao_InitFailed_Content" xml:space="preserve">
+    <value>Please go to Settings - Scan Engine and uncheck this engine.</value>
+  </data>
+  <data name="SecurityPage_Status_Cancelled" xml:space="preserve">
+    <value>Selection cancelled</value>
+  </data>
+  <data name="SecurityPage_Status_Waiting" xml:space="preserve">
+    <value>Waiting</value>
+  </data>
+  <data name="SecurityPage_Status_Processing" xml:space="preserve">
+    <value>Processing files...</value>
+  </data>
+  <data name="SecurityPage_Area_Quick_Title" xml:space="preserve">
+    <value>Quick scan - critical areas</value>
+  </data>
+  <data name="SecurityPage_Area_Quick_Detail" xml:space="preserve">
+    <value>Scanning system critical files and directories</value>
+  </data>
+  <data name="SecurityPage_Area_Full_Title" xml:space="preserve">
+    <value>Full disk scan</value>
+  </data>
+  <data name="SecurityPage_Area_Full_Detail" xml:space="preserve">
+    <value>Scanning all files on all disks</value>
+  </data>
+  <data name="SecurityPage_Area_File_Title" xml:space="preserve">
+    <value>File scan</value>
+  </data>
+  <data name="SecurityPage_Area_File_Detail" xml:space="preserve">
+    <value>Scanning: {0}</value>
+  </data>
+  <data name="SecurityPage_Area_Folder_Title" xml:space="preserve">
+    <value>Folder scan</value>
+  </data>
+  <data name="SecurityPage_Area_Folder_Detail" xml:space="preserve">
+    <value>Scanning: {0}</value>
+  </data>
+  <data name="SecurityPage_Area_More_Title" xml:space="preserve">
+    <value>More scan - custom paths</value>
+  </data>
+  <data name="SecurityPage_Area_More_Detail" xml:space="preserve">
+    <value>{0} paths</value>
+  </data>
+  <data name="SecurityPage_Status_Scanning" xml:space="preserve">
+    <value>Scanning: {0}</value>
+  </data>
+  <data name="SecurityPage_Status_FoundThreat" xml:space="preserve">
+    <value>Threat found</value>
+  </data>
+  <data name="SecurityPage_ScanSpeed_Format" xml:space="preserve">
+    <value>{0:F2} files/s</value>
+  </data>
+  <data name="SecurityPage_Status_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="SecurityPage_ScanCompleteFound" xml:space="preserve">
+    <value>Scan completed, found {0} threats</value>
+  </data>
+  <data name="SecurityPage_ScanCancelled" xml:space="preserve">
+    <value>Scan cancelled</value>
+  </data>
+  <data name="SecurityPage_ScanFailed_Format" xml:space="preserve">
+    <value>Scan failed: {0}</value>
+  </data>
+  <data name="SecurityPage_Details_Title" xml:space="preserve">
+    <value>File Details</value>
+  </data>
+  <data name="SecurityPage_Details_FilePath" xml:space="preserve">
+    <value>File Path:</value>
+  </data>
+  <data name="SecurityPage_Details_VirusName" xml:space="preserve">
+    <value>Virus Name: {0}</value>
+  </data>
+  <data name="SecurityPage_Details_FileSize" xml:space="preserve">
+    <value>File Size: {0:F2} KB</value>
+  </data>
+  <data name="SecurityPage_Details_CreationTime" xml:space="preserve">
+    <value>Creation Time: {0}</value>
+  </data>
+  <data name="SecurityPage_Details_LastWriteTime" xml:space="preserve">
+    <value>Last Write Time: {0}</value>
+  </data>
+  <data name="SecurityPage_Details_LocateButton" xml:space="preserve">
+    <value>Locate File</value>
+  </data>
+  <data name="SecurityPage_LocateFailed_Title" xml:space="preserve">
+    <value>Locate Failed</value>
+  </data>
+  <data name="SecurityPage_LocateFailed_Content" xml:space="preserve">
+    <value>Unable to locate file: {0}</value>
+  </data>
+  <data name="SecurityPage_PathText_Format" xml:space="preserve">
+    <value>Scan mode: {0}</value>
+  </data>
+  <data name="SecurityPage_BackToVirusList_Hide" xml:space="preserve">
+    <value>Hide List</value>
+  </data>
+  <data name="SecurityPage_BackToVirusList_Show" xml:space="preserve">
+    <value>Show List</value>
+  </data>
+  <data name="SecurityPage_Area_Paused_Title" xml:space="preserve">
+    <value>Scan Paused</value>
+  </data>
+  <data name="SecurityPage_Area_Paused_Detail" xml:space="preserve">
+    <value>Scan has been paused, click resume button to continue scanning</value>
+  </data>
+  <data name="SecurityPage_FilesScanned_Format" xml:space="preserve">
+    <value>{0} files</value>
+  </data>
+  <data name="SecurityPage_FilesSafe_Format" xml:space="preserve">
+    <value>{0} safe</value>
+  </data>
+  <data name="SecurityPage_ThreatsFound_Format" xml:space="preserve">
+    <value>{0} threats</value>
+  </data>
+  <data name="MainWindow_Nav_Xdows-Tools.Content" xml:space="preserve">
+    <value>Xdows Tools</value>
+  </data>
+  <data name="MainWindow_Nav_AppStore.Content" xml:space="preserve">
+    <value>App Store</value>
+  </data>
+  <data name="AppStore_SearchBox.PlaceholderText" xml:space="preserve">
+    <value>Search apps...</value>
+  </data>
+  <data name="AppStore_InstallButton.Content" xml:space="preserve">
+    <value>Visit Website</value>
+  </data>
+  <data name="HomePage_TextBlock_Open" xml:space="preserve">
+    <value>You are protected</value>
+  </data>
+  <data name="SettingsPage_Other_CheckUpdate.Header" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="SettingsPage_Other_CheckUpdate.Description" xml:space="preserve">
+    <value>Check for updates to software components</value>
+  </data>
+  <data name="SettingsPage_Other_Config.Header" xml:space="preserve">
+    <value>Configuration</value>
+  </data>
+  <data name="SettingsPage_Other_Config.Description" xml:space="preserve">
+    <value>Manage this application's configuration files</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Location.Header" xml:space="preserve">
+    <value>Configuration Location</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Location.Description" xml:space="preserve">
+    <value>Open the folder containing configuration files</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Reset.Header" xml:space="preserve">
+    <value>Reset Configuration</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Reset.Description" xml:space="preserve">
+    <value>Reset the application's configuration files</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Location_OpenFailed_Title" xml:space="preserve">
+    <value>Open configuration failed</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Location_OpenFailed_Content" xml:space="preserve">
+    <value>Unable to open configuration folder: {0}</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Reset_Confirm_Title" xml:space="preserve">
+    <value>Confirm Reset Configuration</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Reset_Confirm_Content" xml:space="preserve">
+    <value>Delete the configuration folder and restart the app? This action cannot be undone.</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Reset_DeleteFailed_Title" xml:space="preserve">
+    <value>Delete Configuration Failed</value>
+  </data>
+  <data name="SettingsPage_Other_Config_Reset_DeleteFailed_Content" xml:space="preserve">
+    <value>Failed to delete configuration folder: {0}</value>
+  </data>
+  <data name="SettingsPage_Appearance.Text" xml:space="preserve">
+    <value>Appearance</value>
+  </data>
+  <data name="SettingsPage_Appearance_Theme.Header" xml:space="preserve">
+    <value>Application Theme</value>
+  </data>
+  <data name="SettingsPage_Appearance_Theme.Description" xml:space="preserve">
+    <value>Select the application theme to display</value>
+  </data>
+  <data name="SettingsPage_Appearance_Theme_ComboBox_System.Content" xml:space="preserve">
+    <value>Use system settings</value>
+  </data>
+  <data name="SettingsPage_Appearance_Theme_ComboBox_Light.Content" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="SettingsPage_Appearance_Theme_ComboBox_Dark.Content" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="SettingsPage_Scan.Text" xml:space="preserve">
+    <value>Scan Engine</value>
+  </data>
+  <data name="SettingsPage_Scan_Local.Header" xml:space="preserve">
+    <value>Xdows Local Engine</value>
+  </data>
+  <data name="SettingsPage_Scan_Local.Description" xml:space="preserve">
+    <value>The built-in local engine is fast but may not detect the latest threats promptly.</value>
+  </data>
+  <data name="SettingsPage_Scan_Local_DeepScan.Header" xml:space="preserve">
+    <value>Deep Scan</value>
+  </data>
+  <data name="SettingsPage_Scan_Local_DeepScan.Description" xml:space="preserve">
+    <value>Deeper file analysis may increase false positives</value>
+  </data>
+  <data name="SettingsPage_Protection.Text" xml:space="preserve">
+    <value>Protection</value>
+  </data>
+  <data name="SettingsPage_Protection_Process.Header" xml:space="preserve">
+    <value>Process Scan</value>
+  </data>
+  <data name="SettingsPage_Protection_Files.Header" xml:space="preserve">
+    <value>Files Scan</value>
+  </data>
+  <data name="SettingsPage_Protection_Behavior.Header" xml:space="preserve">
+    <value>Behavior Check</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot.Header" xml:space="preserve">
+    <value>Boot Guard</value>
+  </data>
+  <data name="SettingsPage_Protection_Registry.Header" xml:space="preserve">
+    <value>Registry Guard</value>
+  </data>
+  <data name="SettingsPage_Protection_Behavior.Description" xml:space="preserve">
+    <value>Block programs during high-risk operations</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot.Description" xml:space="preserve">
+    <value>Attempt to repair the boot sector if it is tampered with.</value>
+  </data>
+  <data name="SettingsPage_Protection_Files.Description" xml:space="preserve">
+    <value>Scan files after they are created or modified to ensure they are safe.</value>
+  </data>
+  <data name="SettingsPage_Protection_Process.Description" xml:space="preserve">
+    <value>Scan files before execution to ensure they are safe.</value>
+  </data>
+  <data name="SettingsPage_Protection_Registry.Description" xml:space="preserve">
+    <value>Restore registry if maliciously altered</value>
+  </data>
+  <data name="SettingsPage_Protection_Process_DeepScan.Header" xml:space="preserve">
+    <value>Allow deep scan</value>
+  </data>
+  <data name="SettingsPage_Protection_Process_DeepScan.Description" xml:space="preserve">
+    <value>Prompt to perform a deep scan when suspicious files are detected.</value>
+  </data>
+  <data name="SettingsPage_Protection_Files_AllFiles.Header" xml:space="preserve">
+    <value>Scan all files</value>
+  </data>
+  <data name="SettingsPage_Protection_Files_AllFiles.Description" xml:space="preserve">
+    <value>By default, only high-risk directories are scanned.</value>
+  </data>
+  <data name="SettingsPage_Protection_Behavior_Remote.Description" xml:space="preserve">
+    <value>May impact some remote control software</value>
+  </data>
+  <data name="SettingsPage_Protection_Behavior_Remote.Header" xml:space="preserve">
+    <value>Remote command execution</value>
+  </data>
+  <data name="SettingsPage_Protection_Behavior_URL.Description" xml:space="preserve">
+    <value>May cause false positives or affect system stability.</value>
+  </data>
+  <data name="SettingsPage_Protection_Behavior_URL.Header" xml:space="preserve">
+    <value>Access unknown URLs</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot_Open.Description" xml:space="preserve">
+    <value>Recovers system boot sector from backup</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot_Save.Header" xml:space="preserve">
+    <value>Create boot backup</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot_Open.Header" xml:space="preserve">
+    <value>Restore boot backup</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot_Save.Description" xml:space="preserve">
+    <value>Save the current system boot sector to a file.</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot_Save_Button.Content" xml:space="preserve">
+    <value>Save File</value>
+  </data>
+  <data name="SettingsPage_Protection_Boot_Open_Button.Content" xml:space="preserve">
+    <value>Open File</value>
+  </data>
+  <data name="SettingsPage_Protection_Registry_Others.Header" xml:space="preserve">
+    <value>Protect miscellaneous items</value>
+  </data>
+  <data name="SettingsPage_Protection_Registry_Others.Description" xml:space="preserve">
+    <value>Some registry changes may not affect functionality but can cause UI display issues.</value>
+  </data>
+  <data name="SettingsPage_Protection_Registry_Secondary.Header" xml:space="preserve">
+    <value>Protect auxiliary features</value>
+  </data>
+  <data name="SettingsPage_Protection_Registry_Secondary.Description" xml:space="preserve">
+    <value>Protects registry entries used by auxiliary features.</value>
+  </data>
+  <data name="SettingsPage_Protection_Document.Header" xml:space="preserve">
+    <value>Document Protection</value>
+  </data>
+  <data name="SettingsPage_Protection_Document.Description" xml:space="preserve">
+    <value>Monitor important document changes in real-time, automatically create backups and provide recovery options when files are modified or deleted</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_BackupRecovery.Header" xml:space="preserve">
+    <value>Document Backup &amp; Recovery</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_BackupRecovery.Description" xml:space="preserve">
+    <value>Monitor important document changes in real-time, automatically create backups and provide recovery options when files are modified or deleted</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_BackupFolder.Header" xml:space="preserve">
+    <value>Backup Folder Settings</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_BackupFolder.Description" xml:space="preserve">
+    <value>Manage folders that need to be backed up, add or remove monitoring directories</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_BackupFolder_Button.Content" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll.Header" xml:space="preserve">
+    <value>Restore All Files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll.Description" xml:space="preserve">
+    <value>When all files are deleted or modified, you can use this feature to restore all backup files with one click</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Description" xml:space="preserve">
+    <value>When all files are deleted or modified, you can use this feature to restore all backup files with one click</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Button.Content" xml:space="preserve">
+    <value>Restore All Files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Disabled_Title" xml:space="preserve">
+    <value>Document Protection Not Enabled</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Disabled_Content" xml:space="preserve">
+    <value>Document protection is not enabled. Please enable document protection before using this feature.</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_NoBackup_Title" xml:space="preserve">
+    <value>No Backup Files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_NoBackup_Content" xml:space="preserve">
+    <value>There are currently no backup files available to restore.</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Confirm_Title" xml:space="preserve">
+    <value>Confirm Restore All Files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Confirm_Content" xml:space="preserve">
+    <value>About to restore {0} backup files to their original locations. This operation will overwrite files with the same name that currently exist. Continue?</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_NoBackups_Title" xml:space="preserve">
+    <value>No Backup Files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_NoBackups_Content" xml:space="preserve">
+    <value>There are currently no backup files available to restore.</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Confirm_Button_Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Progress_Title" xml:space="preserve">
+    <value>Restoring Files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Progress_Content" xml:space="preserve">
+    <value>Please wait, restoring all backup files...</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Complete_Title" xml:space="preserve">
+    <value>Restore Complete</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Complete_Content" xml:space="preserve">
+    <value>File restore operation completed.
+Successfully restored: {0} files
+Failed: {1} files</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Error_Title" xml:space="preserve">
+    <value>Restore Failed</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_RestoreAll_Error_Content" xml:space="preserve">
+    <value>Error occurred while restoring files: {0}</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_ViewRecentChanges.Header" xml:space="preserve">
+    <value>View Recent Changes</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_ViewRecentChanges.Description" xml:space="preserve">
+    <value>View recently changed or deleted files and selectively restore them</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_ViewRecentChanges_Description" xml:space="preserve">
+    <value>View recently changed or deleted files and selectively restore them</value>
+  </data>
+  <data name="SettingsPage_Protection_Document_ViewRecentChanges_Button.Content" xml:space="preserve">
+    <value>View Recent Changes</value>
+  </data>
+  <data name="RecentFilesDialog_Title" xml:space="preserve">
+    <value>Recently Changed Files</value>
+  </data>
+  <data name="RecentFilesDialog_Description" xml:space="preserve">
+    <value>Below is a list of recently changed or deleted files. You can select the files you need to restore.</value>
+  </data>
+  <data name="RecentFilesDialog_CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="RecentFilesDialog_RefreshButton" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="RecentFilesDialog_CancelButton" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="RecentFilesDialog_FileNameHeader" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="RecentFilesDialog_OriginalPathHeader" xml:space="preserve">
+    <value>Original Path</value>
+  </data>
+  <data name="RecentFilesDialog_ChangeTimeHeader" xml:space="preserve">
+    <value>Change Time</value>
+  </data>
+  <data name="RecentFilesDialog_ChangeTypeHeader" xml:space="preserve">
+    <value>Operation Type</value>
+  </data>
+  <data name="RecentFilesDialog_ChangeType_Modified" xml:space="preserve">
+    <value>Modified/Deleted</value>
+  </data>
+  <data name="RecentFilesDialog_ChangeType_Created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="RecentFilesDialog_RestoreSelectedButton" xml:space="preserve">
+    <value>Restore Selected Files</value>
+  </data>
+  <data name="RecentFilesDialog_DeleteSelectedButton" xml:space="preserve">
+    <value>Delete Selected Backups</value>
+  </data>
+  <data name="RecentFilesDialog_SelectFiles_Title" xml:space="preserve">
+    <value>Information</value>
+  </data>
+  <data name="RecentFilesDialog_SelectFiles_Content" xml:space="preserve">
+    <value>Please select files to restore first.</value>
+  </data>
+  <data name="RecentFilesDialog_ConfirmRestore_Title" xml:space="preserve">
+    <value>Confirm Restore</value>
+  </data>
+  <data name="RecentFilesDialog_ConfirmRestore_Content" xml:space="preserve">
+    <value>About to restore {0} files to their original locations. This operation will overwrite existing files with the same name. Do you want to continue?</value>
+  </data>
+  <data name="RecentFilesDialog_RestoreComplete_Title" xml:space="preserve">
+    <value>Restore Complete</value>
+  </data>
+  <data name="RecentFilesDialog_RestoreComplete_Content" xml:space="preserve">
+    <value>File restore operation completed.
+Successfully restored: {0} files
+Failed: {1} files</value>
+  </data>
+  <data name="RecentFilesDialog_SelectBackups_Content" xml:space="preserve">
+    <value>Please select backups to delete first.</value>
+  </data>
+  <data name="RecentFilesDialog_ConfirmDelete_Title" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+  <data name="RecentFilesDialog_ConfirmDelete_Content" xml:space="preserve">
+    <value>About to delete backups for {0} files. This operation cannot be undone. Do you want to continue?</value>
+  </data>
+  <data name="RecentFilesDialog_DeleteComplete_Title" xml:space="preserve">
+    <value>Delete Complete</value>
+  </data>
+  <data name="RecentFilesDialog_DeleteComplete_Content" xml:space="preserve">
+    <value>Backup delete operation completed.
+Successfully deleted: {0} backups
+Failed: {1} backups</value>
+  </data>
+  <data name="RecentFilesDialog_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="RecentFilesDialog_Error_Content" xml:space="preserve">
+    <value>Error occurred while showing recent files dialog: {0}</value>
+  </data>
+  <data name="SettingsPage_Other.Text" xml:space="preserve">
+    <value>Other</value>
+  </data>
+  <data name="SettingsPage_Quarantine_Trust.Text" xml:space="preserve">
+    <value>Quarantine &amp; Trust</value>
+  </data>
+  <data name="SettingsPage_Quarantine.Header" xml:space="preserve">
+    <value>Quarantine</value>
+  </data>
+  <data name="SettingsPage_Quarantine.Description" xml:space="preserve">
+    <value>Manage quarantined threat files, you can view, restore or permanently delete these files</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ViewItems.Header" xml:space="preserve">
+    <value>View Quarantine Items</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ViewItems.Description" xml:space="preserve">
+    <value>View the list of all quarantined files</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ViewButton.Content" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearAll.Header" xml:space="preserve">
+    <value>Clear Quarantine</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearAll.Description" xml:space="preserve">
+    <value>Permanently delete all quarantined files</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearButton.Content" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="SettingsPage_Trust.Header" xml:space="preserve">
+    <value>Trust Zone</value>
+  </data>
+  <data name="SettingsPage_Trust.Description" xml:space="preserve">
+    <value>Manage files and applications you trust, these items will be excluded from security scans</value>
+  </data>
+  <data name="SettingsPage_Trust_ViewItems.Header" xml:space="preserve">
+    <value>View Trust Items</value>
+  </data>
+  <data name="SettingsPage_Trust_ViewItems.Description" xml:space="preserve">
+    <value>View the list of all trusted files and applications</value>
+  </data>
+  <data name="SettingsPage_Trust_ViewButton.Content" xml:space="preserve">
+    <value>View</value>
+  </data>
+  <data name="SettingsPage_Trust_AddItem.Header" xml:space="preserve">
+    <value>Add Trust Item</value>
+  </data>
+  <data name="SettingsPage_Trust_AddItem.Description" xml:space="preserve">
+    <value>Add new files or folders to the trust list</value>
+  </data>
+  <data name="SettingsPage_Trust_AddButton.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="SettingsPage_Other_Language.Description" xml:space="preserve">
+    <value>Change the display language of the application</value>
+  </data>
+  <data name="SettingsPage_Other_Language.Header" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="SettingsPage_Other_CheckUpdate_Button.Content" xml:space="preserve">
+    <value>Check for Updates</value>
+  </data>
+  <data name="SettingsPage_Other_About.Description" xml:space="preserve">
+    <value>Information related to this software</value>
+  </data>
+  <data name="SettingsPage_Other_About.Header" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="SettingsPage_Other_About_Name.Header" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SettingsPage_Other_About_Version.Header" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="SettingsPage_Other_About_Feedback.Header" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="SettingsPage_Other_About_Website.Header" xml:space="preserve">
+    <value>Website</value>
+  </data>
+  <data name="AllPage_OpenLink.Content" xml:space="preserve">
+    <value>Open Link</value>
+  </data>
+  <data name="Button_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Button_Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="SettingsPage_Other_CheckUpdate_UpdateTeachingTip.Title" xml:space="preserve">
+    <value>This is the latest version</value>
+  </data>
+  <data name="SettingsPage_Other_CheckUpdate_UpdateTeachingTip.Subtitle" xml:space="preserve">
+    <value>This software is up to date on this device</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop.Header" xml:space="preserve">
+    <value>Background Material</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop.Description" xml:space="preserve">
+    <value>Change the background material of the application window</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop_Acrylic.Content" xml:space="preserve">
+    <value>Acrylic</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop_Solid.Content" xml:space="preserve">
+    <value>Solid</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop_MicaAlt.Content" xml:space="preserve">
+    <value>MicaAlt</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop_Mica.Content" xml:space="preserve">
+    <value>Mica</value>
+  </data>
+  <data name="SettingsPage_Scan_ScanProgress.Header" xml:space="preserve">
+    <value>Display Progress</value>
+  </data>
+  <data name="SettingsPage_Scan_ScanProgress.Description" xml:space="preserve">
+    <value>Disabling this option will increase the scanning speed, especially when scanning a large number of files</value>
+  </data>
+  <data name="HomePage_TextBlock_Close" xml:space="preserve">
+    <value>Protection is not enabled</value>
+  </data>
+  <data name="SettingsPage_Scan_Local_ExtraData.Header" xml:space="preserve">
+    <value>Extra Data</value>
+  </data>
+  <data name="SettingsPage_Scan_Local_ExtraData.Description" xml:space="preserve">
+    <value>Add extra metadata to detected virus names</value>
+  </data>
+  <data name="HomePage_Pomes" xml:space="preserve">
+    <value>Light—cosmic dot; black hole its plotted ellipsis.
+Screens fake light with filters, like résumés fake life.
+If light is speech, the rainbow is its slang.
+Low is no abyss; it's where light learns to swerve.
+If dark is light's dead end, what waits beyond the end?
+Light—postcard from space; stars are the stamps it collects.
+Cities pin neon to night, like hearts to bottled notes.
+If light's the courier, dusk is its return address.
+Alone is no abyss; it's light rehearsing tongue-twisters in echoes.
+If shadows are light's reflection, who peers at the mirror's end?
+Light—time's pencil; sunset keeps its point.
+Chrome fakes dawn like emojis fake heartbeats.
+If light's a dialect, auroras are its archaic tongue.
+Night is no finish; it's light's blank draft.
+If silence is light's antonym, who reads beyond the antonym?
+Light—galaxy's comma; meteors its bold italics.
+We cage light in screens like birds hung beneath clouds.
+If light's a code, fireflies tap its Morse.
+Fog is no wall; it's light training to vanish.
+If dust is shattered light, who pieces the jigsaw's end?
+Light—eraser of years; wrinkles the pencil crumbs it leaves.
+Flashes fake forever like screenshots fake tears.
+If light's a tune, dawn is its prelude.
+Ruins aren't the end; light hatches echoes there.
+If echoes are light's shadow, who calls at the shadow's edge?
+Light—cosmic sticky note; supernovas its ripped-off exclamation.
+We fold light into billboards like poems folded into cash.
+If light's a cipher, moonlight is its whisper.
+Rain is no glitch; it's light self-filtering.
+If the end is light's riddle, who sets the riddle past the end?
+Why not try XIGUA Security?</value>
+  </data>
+  <data name="HomePage_RefreshSystemInfo.Content" xml:space="preserve">
+    <value>Refresh System Info</value>
+  </data>
+  <data name="HomePage_SystemInfo.Text" xml:space="preserve">
+    <value>System Info</value>
+  </data>
+  <data name="HomePage_OSName.Text" xml:space="preserve">
+    <value>OS Name: </value>
+  </data>
+  <data name="HomePage_OSVersion.Text" xml:space="preserve">
+    <value>OS Version: </value>
+  </data>
+  <data name="HomePage_OSMemory.Text" xml:space="preserve">
+    <value>OS Memory: </value>
+  </data>
+  <data name="AllPage_Loading" xml:space="preserve">
+    <value>Loading...</value>
+  </data>
+  <data name="HomePage_ProtectionStatus.Text" xml:space="preserve">
+    <value>Protection Status</value>
+  </data>
+  <data name="HomePage_Protection.Text" xml:space="preserve">
+    <value>Protection: </value>
+  </data>
+  <data name="HomePage_LastScan.Text" xml:space="preserve">
+    <value>Last Scan: </value>
+  </data>
+  <data name="HomePage_NumberOfThreats.Text" xml:space="preserve">
+    <value>Number of Threats: </value>
+  </data>
+  <data name="AllPage_Undefined" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="SettingsPage_Scan_SouXiao.Header" xml:space="preserve">
+    <value>SouXiao Engine</value>
+  </data>
+  <data name="SettingsPage_Scan_SouXiao_Develop.Description" xml:space="preserve">
+    <value>Officially maintained by Xdows Security - IceZero Studio.</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop_Opacity.Description" xml:space="preserve">
+    <value>Modify the opacity of the main window</value>
+  </data>
+  <data name="SettingsPage_Scan_CzkCloud.Header" xml:space="preserve">
+    <value>CzkCloud Engine</value>
+  </data>
+  <data name="SettingsPage_Scan_CzkCloud.Description" xml:space="preserve">
+    <value>Connecting to the cloud engine improves detection accuracy but requires an internet connection.</value>
+  </data>
+  <data name="SettingsPage_Scan_SouXiao.Description" xml:space="preserve">
+    <value>IceZero Studio provides the Souxiao high-precision engine.</value>
+  </data>
+  <data name="SettingsPage_Scan_CzkCloud_Develop.Header" xml:space="preserve">
+    <value>About this Engine</value>
+  </data>
+  <data name="SettingsPage_Scan_CzkCloud_Develop.Description" xml:space="preserve">
+    <value>天启星图网络科技 is the developer and maintainer of this scanning engine</value>
+  </data>
+  <data name="SettingsPage_Scan_JiSuSafeAX.Header" xml:space="preserve">
+    <value>JiSuSafe AX Mode</value>
+  </data>
+  <data name="SettingsPage_Scan_JiSuSafeAX.Description" xml:space="preserve">
+    <value>JiSuSafe AX Mode is a high-performance local scanning engine that provides fast and accurate threat detection</value>
+  </data>
+  <data name="SettingsPage_Scan_JiSuSafeAX_Develop.Header" xml:space="preserve">
+    <value>About this Engine</value>
+  </data>
+  <data name="SettingsPage_Scan_JiSuSafeAX_Develop.Description" xml:space="preserve">
+    <value>FastStudio is the developer and maintainer of this scanning engine</value>
+  </data>
+  <data name="SettingsPage_Scan_Cloud.Header" xml:space="preserve">
+    <value>Cloud-based scanning</value>
+  </data>
+  <data name="SettingsPage_Scan_Cloud_AutoUpload.Header" xml:space="preserve">
+    <value>Automatic reporting</value>
+  </data>
+  <data name="SettingsPage_Scan_Cloud.Description" xml:space="preserve">
+    <value>The cloud engine requires an internet connection to detect and respond to the latest threats in real time.</value>
+  </data>
+  <data name="SettingsPage_Scan_Cloud_AutoUpload.Description" xml:space="preserve">
+    <value>This option is required during the testing phase.</value>
+  </data>
+  <data name="SettingsPage_Other_Feedback.Header" xml:space="preserve">
+    <value>Feedback Channel</value>
+  </data>
+  <data name="SettingsPage_Other_Feedback.Description" xml:space="preserve">
+    <value>Provide feedback on related issues or offer suggestions</value>
+  </data>
+  <data name="MainWindow_Nav_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="HomePage_CopySystemInfo.Content" xml:space="preserve">
+    <value>Copy System Info</value>
+  </data>
+  <data name="HomePage_RefreshPomes.Content" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HomePage_Scan.Text" xml:space="preserve">
+    <value>Scan Statistics</value>
+  </data>
+  <data name="HomePage_TotalScans.Text" xml:space="preserve">
+    <value>Total Scans</value>
+  </data>
+  <data name="HomePage_TotalThreats.Text" xml:space="preserve">
+    <value>Threats Found</value>
+  </data>
+  <data name="HomePage_RefreshStatistics.Content" xml:space="preserve">
+    <value>Refresh stats</value>
+  </data>
+  <data name="HomePage_LogsHeader.Text" xml:space="preserve">
+    <value>Logs</value>
+  </data>
+  <data name="HomePage_ClearLog.Content" xml:space="preserve">
+    <value>Clear log</value>
+  </data>
+  <data name="HomePage_ExportLog.Content" xml:space="preserve">
+    <value>Export log</value>
+  </data>
+  <data name="HomePage_LogFilter.Content" xml:space="preserve">
+    <value>Filter logs</value>
+  </data>
+  <data name="HomePage_LogFilter_All.Text" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="HomePage_LogFilter_Undefined.Text" xml:space="preserve">
+    <value>Undefined</value>
+  </data>
+  <data name="HomePage_LogFilter_Debug.Text" xml:space="preserve">
+    <value>Debug</value>
+  </data>
+  <data name="HomePage_LogFilter_Info.Text" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="HomePage_LogFilter_Warn.Text" xml:space="preserve">
+    <value>Warn</value>
+  </data>
+  <data name="HomePage_LogFilter_Error.Text" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="HomePage_LogFilter_Fatal.Text" xml:space="preserve">
+    <value>Fatal</value>
+  </data>
+  <data name="HomePage_GetFailed.Text" xml:space="preserve">
+    <value>Unavailable</value>
+  </data>
+  <data name="HomePage_ExportLog_SaveDialog_Title" xml:space="preserve">
+    <value>Save log</value>
+  </data>
+  <data name="HomePage_ExportLog_Filter_Name" xml:space="preserve">
+    <value>Log files</value>
+  </data>
+  <data name="SettingsPage_Appearance_Nav.Header" xml:space="preserve">
+    <value>Navigation Position</value>
+  </data>
+  <data name="SettingsPage_Appearance_Nav.Description" xml:space="preserve">
+    <value>Set the position and orientation of the navigation bar</value>
+  </data>
+  <data name="SettingsPage_Appearance_Nav_Top.Content" xml:space="preserve">
+    <value>Top</value>
+  </data>
+  <data name="SettingsPage_Appearance_Nav_Left.Content" xml:space="preserve">
+    <value>Left</value>
+  </data>
+  <data name="SettingsPage_Search.PlaceholderText" xml:space="preserve">
+    <value>Search settings...</value>
+  </data>
+  <data name="SettingsPage_Scan_SouXiao_Develop.Header" xml:space="preserve">
+    <value>About this Engine</value>
+  </data>
+  <data name="SettingsPage_Appearance_Backdrop_Opacity.Header" xml:space="preserve">
+    <value>Opacity</value>
+  </data>
+  <data name="InterceptWindow_HeaderTitle" xml:space="preserve">
+    <value>Threat found! Remove now!</value>
+  </data>
+  <data name="InterceptWindow_HeaderSubtitle" xml:space="preserve">
+    <value>Suspicious program intercepted. Please take action.</value>
+  </data>
+  <data name="InterceptWindow_ModifyDateCaption" xml:space="preserve">
+    <value>Modified</value>
+  </data>
+  <data name="InterceptWindow_EngineCaption" xml:space="preserve">
+    <value>Scanner Engine</value>
+  </data>
+  <data name="InterceptWindow_EngineName" xml:space="preserve">
+    <value>SouXiao Engine</value>
+  </data>
+  <data name="InterceptWindow_EngineName_Registry" xml:space="preserve">
+    <value>Built-in Rules</value>
+  </data>
+  <data name="InterceptWindow_SecurityAdviceCaption" xml:space="preserve">
+    <value>Security Advice</value>
+  </data>
+  <data name="InterceptWindow_SecurityAdvice" xml:space="preserve">
+    <value>Detected suspicious behavior. Recommended action: delete the file or restore if it is a false positive.</value>
+  </data>
+  <data name="InterceptWindow_ChooseActionText" xml:space="preserve">
+    <value>Please choose an action:</value>
+  </data>
+  <data name="InterceptWindow_ActionButtonText" xml:space="preserve">
+    <value>Perform Action</value>
+  </data>
+  <data name="InterceptWindow_DeleteMenu" xml:space="preserve">
+    <value>Delete file</value>
+  </data>
+  <data name="InterceptWindow_RestoreMenu" xml:space="preserve">
+    <value>Restore file</value>
+  </data>
+  <data name="InterceptWindow_DisableMenu" xml:space="preserve">
+    <value>Disable protection</value>
+  </data>
+  <data name="InterceptWindow_Delete_Success_Title" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="InterceptWindow_Delete_Success_Message" xml:space="preserve">
+    <value>File was successfully deleted.</value>
+  </data>
+  <data name="InterceptWindow_Delete_NoFile_Title" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="InterceptWindow_Delete_NoFile_Message" xml:space="preserve">
+    <value>The file to delete was not found.</value>
+  </data>
+  <data name="InterceptWindow_Delete_Failed_Title" xml:space="preserve">
+    <value>Delete failed</value>
+  </data>
+  <data name="InterceptWindow_Delete_Failed_Message" xml:space="preserve">
+    <value>Failed to delete file. Please check permissions and whether the file is in use.</value>
+  </data>
+  <data name="InterceptWindow_Restore_Success_Title" xml:space="preserve">
+    <value>Restored</value>
+  </data>
+  <data name="InterceptWindow_Restore_Success_MESSAGE" xml:space="preserve">
+    <value>File restored successfully.</value>
+  </data>
+  <data name="InterceptWindow_Restore_NoFile_Title" xml:space="preserve">
+    <value>File not found</value>
+  </data>
+  <data name="InterceptWindow_Restore_NoFile_Message" xml:space="preserve">
+    <value>The file to restore was not found.</value>
+  </data>
+  <data name="InterceptWindow_Restore_Failed_Title" xml:space="preserve">
+    <value>Restore failed</value>
+  </data>
+  <data name="InterceptWindow_Restore_Failed_Message" xml:space="preserve">
+    <value>Failed to restore file. Please check permissions.</value>
+  </data>
+  <data name="InterceptWindow_Disable_Confirm_Title" xml:space="preserve">
+    <value>Disable protection</value>
+  </data>
+  <data name="InterceptWindow_Disable_Confirm_Message" xml:space="preserve">
+    <value>Are you sure you want to disable real-time protection? This may reduce system security.</value>
+  </data>
+  <data name="InterceptWindow_Disable_Success_Title" xml:space="preserve">
+    <value>Protection disabled</value>
+  </data>
+  <data name="InterceptWindow_Disable_Success_Message" xml:space="preserve">
+    <value>Real-time protection has been disabled.</value>
+  </data>
+  <data name="InterceptWindow_WindowTitle" xml:space="preserve">
+    <value>Threat detected</value>
+  </data>
+  <data name="SettingsPage_Scan_Cloud_Disclaimer_Title" xml:space="preserve">
+    <value>Disclaimer</value>
+  </data>
+  <data name="SettingsPage_Scan_Cloud_Disclaimer_Text" xml:space="preserve">
+    <value>Once you enable this engine,
+using it to scan files will send the file data or its information to the servers of the corresponding cloud service provider.
+Users should consciously comply with relevant service agreements, treaties, or declarations, and should not send files involving relevant laws or privacy.
+Any issues or losses such as file leaks caused by this engine shall be borne by the cloud service provider, and the software developer shall not assume any responsibility.
+The software developer also shall not be responsible for any loss of files or data resulting from force majeure events, such as server failures.
+This statement or the cloud service agreement, treaty, or declaration may be modified, deleted, or supplemented due to software updates or other factors.
+In case of disputes, the latest version shall prevail. The software developer reserves the right to revise, delete, or supplement this statement without the user's consent, and the final interpretation right of this statement belongs to the software developer.
+The original developer of this software (Xdows Software) bears no responsibility for any problems arising from branches of this software. By using this engine in any manner, you agree to and accept this statement.
+In the event of any form of dispute, the Chinese version of the disclaimer shall prevail.
+If you do not accept it, please turn off the engine, or stop using and delete the software.</value>
+  </data>
+  <data name="BugReportPage_Connected" xml:space="preserve">
+    <value>Connected</value>
+  </data>
+  <data name="BugReportPage_ConnectionFailed" xml:space="preserve">
+    <value>Connection failed</value>
+  </data>
+  <data name="BugReportPage_SelectFileTitle" xml:space="preserve">
+    <value>Select file</value>
+  </data>
+  <data name="BugReportPage_DownloadAndLocate" xml:space="preserve">
+    <value>Download and locate</value>
+  </data>
+  <data name="BugReportPage_Input.PlaceholderText" xml:space="preserve">
+    <value>Type a message...</value>
+  </data>
+  <data name="BugReportPage_NotConnected" xml:space="preserve">
+    <value>Not connected</value>
+  </data>
+  <data name="BugReportPage_FileButton.Content" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="BugReportPage_SendButton.Content" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="BugReportPage_ReconnectButton.Content" xml:space="preserve">
+    <value>Reconnect</value>
+  </data>
+  <data name="BugReportPage_ConnectionFailedMessage" xml:space="preserve">
+    <value>Connection failed: </value>
+  </data>
+  <data name="BugReportPage_FileTooLarge" xml:space="preserve">
+    <value>File exceeds 20 KB, rejected</value>
+  </data>
+  <data name="BugReportPage_FileSent" xml:space="preserve">
+    <value>[File sent] </value>
+  </data>
+  <data name="QuarantineDialog_Title" xml:space="preserve">
+    <value>Quarantine</value>
+  </data>
+  <data name="QuarantineDialog_TotalItems" xml:space="preserve">
+    <value>Total {0} quarantined items</value>
+  </data>
+  <data name="QuarantineDialog_FileName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="QuarantineDialog_FilePath" xml:space="preserve">
+    <value>File Path</value>
+  </data>
+  <data name="QuarantineDialog_QuarantineDate" xml:space="preserve">
+    <value>Quarantine Date</value>
+  </data>
+  <data name="QuarantineDialog_VirusName" xml:space="preserve">
+    <value>Virus Name</value>
+  </data>
+  <data name="QuarantineDialog_Restore.Content" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="QuarantineDialog_Delete.Content" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll.Content" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="QuarantineDialog_Empty_Title" xml:space="preserve">
+    <value>Quarantine is empty</value>
+  </data>
+  <data name="QuarantineDialog_Empty_Message" xml:space="preserve">
+    <value>There are currently no quarantined files</value>
+  </data>
+  <data name="QuarantineDialog_Restore_Confirm_Title" xml:space="preserve">
+    <value>Confirm Restore</value>
+  </data>
+  <data name="QuarantineDialog_Restore_Confirm_Message" xml:space="preserve">
+    <value>Are you sure you want to restore this file? After restoration, the file will return to its original location.</value>
+  </data>
+  <data name="QuarantineDialog_Restore_Success_Title" xml:space="preserve">
+    <value>Restore Successful</value>
+  </data>
+  <data name="QuarantineDialog_Restore_Success_Message" xml:space="preserve">
+    <value>File has been successfully restored to its original location</value>
+  </data>
+  <data name="QuarantineDialog_Restore_Failed_Title" xml:space="preserve">
+    <value>Restore Failed</value>
+  </data>
+  <data name="QuarantineDialog_Restore_Failed_Message" xml:space="preserve">
+    <value>Failed to restore file. Please check if the file exists or if permissions are sufficient</value>
+  </data>
+  <data name="QuarantineDialog_Delete_Confirm_Title" xml:space="preserve">
+    <value>Confirm Delete</value>
+  </data>
+  <data name="QuarantineDialog_Delete_Confirm_Message" xml:space="preserve">
+    <value>Are you sure you want to permanently delete this file? This action cannot be undone.</value>
+  </data>
+  <data name="QuarantineDialog_Delete_Success_Title" xml:space="preserve">
+    <value>Delete Successful</value>
+  </data>
+  <data name="QuarantineDialog_Delete_Success_Message" xml:space="preserve">
+    <value>File has been permanently deleted</value>
+  </data>
+  <data name="QuarantineDialog_Delete_Failed_Title" xml:space="preserve">
+    <value>Delete Failed</value>
+  </data>
+  <data name="QuarantineDialog_Delete_Failed_Message" xml:space="preserve">
+    <value>Failed to delete file. Please check permissions</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll_Confirm_Title" xml:space="preserve">
+    <value>Confirm Clear Quarantine</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll_Confirm_Message" xml:space="preserve">
+    <value>Are you sure you want to permanently delete all quarantined files? This action cannot be undone.</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll_Success_Title" xml:space="preserve">
+    <value>Clear Successful</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll_Success_Message" xml:space="preserve">
+    <value>All quarantined files have been permanently deleted</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll_Failed_Title" xml:space="preserve">
+    <value>Clear Failed</value>
+  </data>
+  <data name="QuarantineDialog_ClearAll_Failed_Message" xml:space="preserve">
+    <value>Failed to clear quarantine area, please try again</value>
+  </data>
+  <data name="SecurityPage_MenuItem_Trust.Text" xml:space="preserve">
+    <value>Trust File</value>
+  </data>
+  <data name="SecurityPage_MenuItem_Handle.Text" xml:space="preserve">
+    <value>Handle File</value>
+  </data>
+  <data name="SecurityPage_TrustConfirm_Title" xml:space="preserve">
+    <value>Trust File</value>
+  </data>
+  <data name="SecurityPage_TrustConfirm_Content" xml:space="preserve">
+    <value>Are you sure you want to add this file to the trust area? {0} will no longer be detected as a threat by the scan engine.</value>
+  </data>
+  <data name="SecurityPage_TrustConfirm_Primary" xml:space="preserve">
+    <value>Trust</value>
+  </data>
+  <data name="SecurityPage_TrustResult_Title" xml:space="preserve">
+    <value>Trust Successful</value>
+  </data>
+  <data name="SecurityPage_TrustResult_Content" xml:space="preserve">
+    <value>File {0} has been successfully added to the trust area and will no longer be detected as a threat.</value>
+  </data>
+  <data name="SecurityPage_TrustFailed_Title" xml:space="preserve">
+    <value>Trust Failed</value>
+  </data>
+  <data name="SecurityPage_TrustFailed_Content" xml:space="preserve">
+    <value>Failed to add file to trust area. Please check if the file exists or if permissions are sufficient.</value>
+  </data>
+  <data name="SecurityPage_HandleConfirm_Title" xml:space="preserve">
+    <value>Handle File</value>
+  </data>
+  <data name="SecurityPage_HandleConfirm_Content" xml:space="preserve">
+    <value>Are you sure to handle this file
+{0}</value>
+  </data>
+  <data name="SecurityPage_HandleConfirm_Primary" xml:space="preserve">
+    <value>Handle</value>
+  </data>
+  <data name="SecurityPage_HandleAction_Quarantined" xml:space="preserve">
+    <value>File has been successfully quarantined</value>
+  </data>
+  <data name="SecurityPage_HandleAction_Deleted" xml:space="preserve">
+    <value>File has been successfully deleted</value>
+  </data>
+  <data name="SecurityPage_HandleAction_Renamed" xml:space="preserve">
+    <value>File has been renamed to: {0}</value>
+  </data>
+  <data name="SecurityPage_HandleAction_Failed" xml:space="preserve">
+    <value>Failed to handle file</value>
+  </data>
+  <data name="SecurityPage_HandleResult_Title" xml:space="preserve">
+    <value>Handle Result</value>
+  </data>
+  <data name="SecurityPage_HandleFailed_Title" xml:space="preserve">
+    <value>Handle Failed</value>
+  </data>
+  <data name="SecurityPage_Area_Resume_Title" xml:space="preserve">
+    <value>Scan Resumed</value>
+  </data>
+  <data name="SecurityPage_Area_Resume_Detail" xml:space="preserve">
+    <value>Scan has been resumed, continuing to scan</value>
+  </data>
+  <data name="QuarantineDialog_OperationResult" xml:space="preserve">
+    <value>Operation Result</value>
+  </data>
+  <data name="TrustDialog_Title" xml:space="preserve">
+    <value>Trust Zone</value>
+  </data>
+  <data name="TrustDialog_CloseButton" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="TrustDialog_EmptyStatus" xml:space="preserve">
+    <value>No items in trust zone</value>
+  </data>
+  <data name="TrustDialog_TotalCount" xml:space="preserve">
+    <value>Total {0} trust items</value>
+  </data>
+  <data name="TrustDialog_ConfirmClearTitle" xml:space="preserve">
+    <value>Confirm Clear</value>
+  </data>
+  <data name="TrustDialog_ConfirmClearContent" xml:space="preserve">
+    <value>Are you sure you want to clear the trust zone? This will delete</value>
+  </data>
+  <data name="TrustDialog_ConfirmClearItems" xml:space="preserve">
+    <value>trust items</value>
+  </data>
+  <data name="TrustDialog_ClearAll" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="TrustDialog_ClearSuccessTitle" xml:space="preserve">
+    <value>Clear Success</value>
+  </data>
+  <data name="TrustDialog_ClearFailedTitle" xml:space="preserve">
+    <value>Clear Failed</value>
+  </data>
+  <data name="TrustDialog_ConfirmRemoveTitle" xml:space="preserve">
+    <value>Confirm Remove</value>
+  </data>
+  <data name="TrustDialog_ConfirmRemoveContent" xml:space="preserve">
+    <value>Are you sure you want to remove</value>
+  </data>
+  <data name="TrustDialog_ConfirmRemoveSuffix" xml:space="preserve">
+    <value>?</value>
+  </data>
+  <data name="TrustDialog_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="TrustDialog_RemoveSuccessTitle" xml:space="preserve">
+    <value>Remove Success</value>
+  </data>
+  <data name="TrustDialog_RemoveFailedTitle" xml:space="preserve">
+    <value>Remove Failed</value>
+  </data>
+  <data name="AddTrustDialog_Title" xml:space="preserve">
+    <value>Add to Trust Zone</value>
+  </data>
+  <data name="AddTrustDialog_SelectFile_Title" xml:space="preserve">
+    <value>Select File</value>
+  </data>
+  <data name="AddTrustDialog_SelectFolder_Title" xml:space="preserve">
+    <value>Select Folder</value>
+  </data>
+  <data name="AddTrustDialog_AllFiles_Filter" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="AddTrustDialog_Error_SelectFile" xml:space="preserve">
+    <value>Please select a file or folder to add</value>
+  </data>
+  <data name="AddTrustDialog_Error_AddFailed" xml:space="preserve">
+    <value>Add Failed</value>
+  </data>
+  <data name="AddTrustDialog_Error_BrowseFailed" xml:space="preserve">
+    <value>Browse Failed</value>
+  </data>
+  <data name="AddTrustDialog_Preview_SelectFile" xml:space="preserve">
+    <value>Please select a file or folder</value>
+  </data>
+  <data name="AddTrustDialog_Label_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="AddTrustDialog_Label_Size" xml:space="preserve">
+    <value>Size</value>
+  </data>
+  <data name="AddTrustDialog_Label_Contains" xml:space="preserve">
+    <value>Contains</value>
+  </data>
+  <data name="AddTrustDialog_Label_File" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="AddTrustDialog_Label_Folder" xml:space="preserve">
+    <value>folder</value>
+  </data>
+  <data name="AddTrustDialog_Status_FileExists" xml:space="preserve">
+    <value>File exists, can be added</value>
+  </data>
+  <data name="AddTrustDialog_Status_FileNotExists" xml:space="preserve">
+    <value>File does not exist, cannot be added</value>
+  </data>
+  <data name="AddTrustDialog_Status_FolderExists" xml:space="preserve">
+    <value>Folder exists, can be added</value>
+  </data>
+  <data name="AddTrustDialog_Status_FolderNotExists" xml:space="preserve">
+    <value>Folder does not exist, cannot be added</value>
+  </data>
+  <data name="TrustItem_Type_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="TrustItem_Type_Folder" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="Common_OperationSuccess" xml:space="preserve">
+    <value>Operation Successful</value>
+  </data>
+  <data name="Common_OperationFailed" xml:space="preserve">
+    <value>Operation Failed</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Common_Ok" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="QuarantineDialog_OperationFailed" xml:space="preserve">
+    <value>Operation Failed</value>
+  </data>
+  <data name="QuarantineDialog_InvalidPath" xml:space="preserve">
+    <value>Invalid Path</value>
+  </data>
+  <data name="QuarantineDialog_RestoreError" xml:space="preserve">
+    <value>Restore Error</value>
+  </data>
+  <data name="QuarantineDialog_DeleteError" xml:space="preserve">
+    <value>Delete Error</value>
+  </data>
+  <data name="QuarantineDialog_ClearFailed" xml:space="preserve">
+    <value>Clear Failed</value>
+  </data>
+  <data name="QuarantineDialog_ClearFailedMessage" xml:space="preserve">
+    <value>An error occurred while clearing the quarantine area</value>
+  </data>
+  <data name="TrustDialog_AddButton.Content" xml:space="preserve">
+    <value>Add File/Folder</value>
+  </data>
+  <data name="TrustDialog_ClearButton.Content" xml:space="preserve">
+    <value>Clear Trust Zone</value>
+  </data>
+  <data name="TrustDialog_RemoveButton.Content" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="AddTrustDialog_AddButton.Content" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AddTrustDialog_CancelButton.Content" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="AddTrustDialog_Description.Text" xml:space="preserve">
+    <value>Select the file or folder to add to the trust zone:</value>
+  </data>
+  <data name="AddTrustDialog_PathPlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Enter file or folder path...</value>
+  </data>
+  <data name="AddTrustDialog_BrowseButton.Content" xml:space="preserve">
+    <value>Browse...</value>
+  </data>
+  <data name="AddTrustDialog_Type_File.Content" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="AddTrustDialog_Type_Folder.Content" xml:space="preserve">
+    <value>Folder</value>
+  </data>
+  <data name="AddTrustDialog_Label_Type.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="AddTrustDialog_Label_Path.Text" xml:space="preserve">
+    <value>Path</value>
+  </data>
+  <data name="AddTrustDialog_Label_Note.Text" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="AddTrustDialog_NotePlaceholder.PlaceholderText" xml:space="preserve">
+    <value>Enter optional note...</value>
+  </data>
+  <data name="AddTrustDialog_Preview_Title.Text" xml:space="preserve">
+    <value>Preview</value>
+  </data>
+  <data name="AllPage_Status" xml:space="preserve">
+    <value>Enable,Disabled</value>
+  </data>
+  <data name="SettingsPage_Other_Tray.Header" xml:space="preserve">
+    <value>Tray Icon</value>
+  </data>
+  <data name="SettingsPage_Other_Tray.Description" xml:space="preserve">
+    <value>Show tray icon in the taskbar</value>
+  </data>
+  <data name="TrayMenu_Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="TrayMenu_Quit" xml:space="preserve">
+    <value>Quit</value>
+  </data>
+  <data name="TrayMenu_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsPage_Other_DisabledVerify.Header" xml:space="preserve">
+    <value>Disabled Verify</value>
+  </data>
+  <data name="SettingsPage_Other_DisabledVerify.Description" xml:space="preserve">
+    <value>Disable verification for performing high-risk operations</value>
+  </data>
+  <data name="SettingsPage_Quarantine_Empty_Title" xml:space="preserve">
+    <value>Quarantine is empty</value>
+  </data>
+  <data name="SettingsPage_Quarantine_Empty_Content" xml:space="preserve">
+    <value>There are no files in the quarantine to clear.</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearConfirm_Title" xml:space="preserve">
+    <value>Confirm Clear</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearConfirm_Content" xml:space="preserve">
+    <value>Are you sure you want to permanently delete all {0} files in the quarantine? This action cannot be undone.</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearConfirm_PrimaryButton" xml:space="preserve">
+    <value>Clear All</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearSuccess_Title" xml:space="preserve">
+    <value>Quarantine Cleared</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearSuccess_Content" xml:space="preserve">
+    <value>All files have been permanently deleted from the quarantine.</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearFailed_Title" xml:space="preserve">
+    <value>Clear Failed</value>
+  </data>
+  <data name="SettingsPage_Quarantine_ClearFailed_Content" xml:space="preserve">
+    <value>An error occurred while clearing the quarantine. Please try again.</value>
+  </data>
+  <data name="SettingsPage_Appearance_BackgroundImage.Header" xml:space="preserve">
+    <value>Background Image</value>
+  </data>
+  <data name="SettingsPage_Appearance_BackgroundImage.Description" xml:space="preserve">
+    <value>Set the background image for this software</value>
+  </data>
+  <data name="SettingsPage_Appearance_BackgroundImage_ClearButton.Content" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="SettingsPage_Appearance_BackgroundImage_SelectButton.Content" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="SettingsPage_Appearance_BackgroundImageOpacity.Header" xml:space="preserve">
+    <value>Image Opacity</value>
+  </data>
+  <data name="SettingsPage_Appearance_BackgroundImageOpacity.Description" xml:space="preserve">
+    <value>Set the opacity of the background image</value>
+  </data>
+  <data name="SettingsPage_BackgroundImage_Error_Title" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="SettingsPage_BackgroundImage_SelectError_Content" xml:space="preserve">
+    <value>Failed to set background image: {0}</value>
+  </data>
+  <data name="SettingsPage_BackgroundImage_ClearError_Content" xml:space="preserve">
+    <value>Failed to clear background image: {0}</value>
+  </data>
+  <data name="SettingsPage_BackgroundImage_SelectDialog_Title" xml:space="preserve">
+    <value>Choose Background Photo</value>
+  </data>
+  <data name="SettingsPage_BackgroundImage_ImageFiles" xml:space="preserve">
+    <value>Photo Files</value>
+  </data>
+  <data name="SettingsPage_BackgroundImage_AllFiles" xml:space="preserve">
+    <value>All Files</value>
+  </data>
+  <data name="SettingsPage_Other_About_Developer.Header" xml:space="preserve">
+    <value>Developer</value>
+  </data>
+  <data name="SettingsPage_Other_About_Developer_Text.Text" xml:space="preserve">
+    <value>IceZero Studio</value>
+  </data>
+  <data name="HomePage_RealTimeProtection.Text" xml:space="preserve">
+    <value>Real-time Protection</value>
+  </data>
+  <data name="HomePage_RealTimeProtectionDesc.Text" xml:space="preserve">
+    <value>Monitoring system activity</value>
+  </data>
+  <data name="HomePage_FileProtection.Text" xml:space="preserve">
+    <value>File Protection</value>
+  </data>
+  <data name="HomePage_FileProtectionDesc.Text" xml:space="preserve">
+    <value>Monitoring file operations</value>
+  </data>
+  <data name="AppStorePage_Categories.Text" xml:space="preserve">
+    <value>Categories</value>
+  </data>
+  <data name="AppStorePage_AllApps.Content" xml:space="preserve">
+    <value>All Apps</value>
+  </data>
+  <data name="AppStorePage_DevTools.Content" xml:space="preserve">
+    <value>Development Tools</value>
+  </data>
+  <data name="AppStorePage_SystemTools.Content" xml:space="preserve">
+    <value>System Tools</value>
+  </data>
+  <data name="AppStorePage_Multimedia.Content" xml:space="preserve">
+    <value>Multimedia</value>
+  </data>
+  <data name="AppStorePage_NetworkTools.Content" xml:space="preserve">
+    <value>Network Tools</value>
+  </data>
+  <data name="AppStorePage_Communication.Content" xml:space="preserve">
+    <value>Communication</value>
+  </data>
+  <data name="AppStorePage_Office.Content" xml:space="preserve">
+    <value>Office Software</value>
+  </data>
+  <data name="AppStorePage_Design.Content" xml:space="preserve">
+    <value>Design Software</value>
+  </data>
+  <data name="AppStorePage_PageIndicator.Text" xml:space="preserve">
+    <value>Page 1/1</value>
+  </data>
+  <data name="HomePage_ProtectionStatus.Text" xml:space="preserve">
+    <value>Protection Status</value>
+  </data>
+  <data name="HomePage_ScanStatistics.Text" xml:space="preserve">
+    <value>Scan Statistics</value>
+  </data>
+  <data name="HomePage_ThreatCount.Text" xml:space="preserve">
+    <value>Threat Count</value>
+  </data>
+  <data name="SettingsPage_Other_AssistantMode.Header" xml:space="preserve">
+    <value>Assistant Mode</value>
+  </data>
+  <data name="SettingsPage_Other_AssistantMode.Description" xml:space="preserve">
+    <value>When enabled, this program will act as a backend protection program to provide security protection support for Xdows-Security. Xdows-Security will serve as the frontend interface, while this program will provide core protection functionality in the background.</value>
+  </data>
+  <data name="AssistantModeDialog_Title" xml:space="preserve">
+    <value>Xdows-Security Detected</value>
+  </data>
+  <data name="AssistantModeDialog_NormalMode" xml:space="preserve">
+    <value>Normal Mode</value>
+  </data>
+  <data name="AssistantModeDialog_AssistantMode" xml:space="preserve">
+    <value>Assistant Mode</value>
+  </data>
+  <data name="AssistantModeDialog_DetectionMessage" xml:space="preserve">
+    <value>Xdows-Security has been detected on your system.</value>
+  </data>
+  <data name="AssistantModeDialog_SelectMode" xml:space="preserve">
+    <value>Please select a mode:</value>
+  </data>
+  <data name="AssistantModeDialog_NormalModeDescription" xml:space="preserve">
+    <value>The current program provides all features, including protection, scanning, and app store support.</value>
+  </data>
+  <data name="AssistantModeDialog_AssistantModeDescription" xml:space="preserve">
+    <value>This program will act as a backend protection program to provide security protection support for Xdows-Security. Xdows-Security will serve as the frontend interface, while this program will provide core protection functionality in the background.</value>
+  </data>
+  <data name="AssistantModeDialog_SettingsNote" xml:space="preserve">
+    <value>You can change this mode at any time in the settings page.</value>
+  </data>
+</root>

@@ -1,0 +1,507 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="XIGUASecurity.HomePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:l="using:WinUI3Localizer"
+    xmlns:vm="using:XIGUASecurity.ViewModel"
+    mc:Ignorable="d">
+
+    <!-- 1. 指定 DataContext -->
+    <Page.DataContext>
+        <vm:HomeViewModel x:Name="Vm"/>
+    </Page.DataContext>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部标题区域 -->
+        <Border Grid.Row="0" Height="120" Margin="24,24,24,12"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                BorderThickness="1"
+                CornerRadius="8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 左侧图标和标题 -->
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Border Width="80" Height="80" CornerRadius="40" Margin="24,0,0,0">
+                        <FontIcon Glyph="{x:Bind Vm.HomePageIcon, Mode=OneWay}" 
+                                  FontSize="40" 
+                                  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+
+                    <StackPanel Margin="20,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="{x:Bind Vm.HomePageText, Mode=OneWay}"
+                                   FontSize="32" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <TextBlock Text="{x:Bind Vm.PomesLine, Mode=OneWay}"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       VerticalAlignment="Center"
+                                       IsTextSelectionEnabled="True"/>
+                            <Button l:Uids.Uid="HomePage_RefreshPomes"
+                                    Command="{x:Bind Vm.RefreshPomesCommand}"
+                                    Height="24" Width="24" Padding="0" Margin="8,0,0,0"
+                                    ToolTipService.ToolTip="刷新格言">
+                                <FontIcon Glyph="&#xE72C;" FontSize="12"/>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- 右侧快速操作按钮 -->
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" Margin="0,0,24,0">
+                    <Button x:Name="QuickScanButton" Content="快速扫描" 
+                            Margin="0,0,12,0" Click="QuickScanButton_Click"/>
+                    <Button x:Name="SettingsButton" Content="设置" 
+                            Click="SettingsButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- 状态指示器 -->
+        <Grid Grid.Row="1" Margin="24,0,24,12">
+            <Border CornerRadius="12" Padding="16"
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                    BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- 防护状态 -->
+                    <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                        <Grid Width="48" Height="48" CornerRadius="24" Margin="0,0,0,8">
+                            <FontIcon Glyph="&#xE8BD;" FontSize="24"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock l:Uids.Uid="HomePage_ProtectionStatus" HorizontalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBlock Text="{x:Bind Vm.ProtectionStatus, Mode=OneWay}"
+                                   HorizontalAlignment="Center" FontSize="14" FontWeight="Bold"
+                                   Foreground="{x:Bind Vm.ProtectionColor, Mode=OneWay}"/>
+                    </StackPanel>
+
+                    <!-- 扫描统计 -->
+                    <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                        <Grid Width="48" Height="48" CornerRadius="24" Margin="0,0,0,8">
+                            <FontIcon Glyph="&#xE8B7;" FontSize="24"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock l:Uids.Uid="HomePage_ScanStatistics" HorizontalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBlock Text="{x:Bind Vm.TotalScans, Mode=OneWay}" 
+                                   HorizontalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                    </StackPanel>
+
+                    <!-- 威胁数量 -->
+                    <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                        <Grid Width="48" Height="48" CornerRadius="24" Margin="0,0,0,8">
+                            <FontIcon Glyph="&#xE783;" FontSize="24"
+                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <TextBlock l:Uids.Uid="HomePage_ThreatCount" HorizontalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+                        <TextBlock Text="{x:Bind Vm.TotalThreats, Mode=OneWay}"
+                                   HorizontalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- 主要内容区域 -->
+        <ScrollViewer Grid.Row="2" Margin="24,0,24,24" VerticalScrollBarVisibility="Auto">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- 左侧：系统信息和日志 -->
+                <StackPanel Grid.Column="0" Spacing="12">
+                    <!-- 系统信息 -->
+                    <Border CornerRadius="12" Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                                <FontIcon Glyph="&#xE770;" FontSize="20" 
+                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock l:Uids.Uid="HomePage_SystemInfo" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Spacing="12">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="操作系统" Grid.Column="0" 
+                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind Vm.OsName, Mode=OneWay}"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="版本" Grid.Column="0" 
+                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind Vm.OsVersion, Mode=OneWay}"/>
+                                </Grid>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="内存使用" Grid.Column="0" 
+                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1" Text="{x:Bind Vm.MemoryUsage, Mode=OneWay}"/>
+                                </Grid>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" 
+                                        FlowDirection="RightToLeft" VerticalAlignment="Top" 
+                                        Margin="0,0,0,16">
+                                <Button l:Uids.Uid="HomePage_CopySystemInfo"
+                                        Command="{x:Bind Vm.CopySysInfoCommand}"
+                                        Height="32" Padding="8,0">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE8C8;" FontSize="12"/>
+                                        <TextBlock Text="复制"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button l:Uids.Uid="HomePage_RefreshSystemInfo"
+                                        Command="{x:Bind Vm.RefreshSysInfoCommand}"
+                                        Height="32" Padding="8,0" Margin="0,0,8,0">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE72C;" FontSize="12"/>
+                                        <TextBlock Text="刷新"/>
+                                    </StackPanel>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- 日志区域 -->
+                    <Border CornerRadius="12" Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                                <FontIcon Glyph="&#xE8F1;" FontSize="20" 
+                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock l:Uids.Uid="HomePage_LogsHeader" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="8" Margin="0,0,0,12">
+                                <Button l:Uids.Uid="HomePage_ClearLog"
+                                        Command="{x:Bind Vm.ClearLogCommand}"
+                                        Height="32" Padding="8,0">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE74D;" FontSize="12"/>
+                                        <TextBlock Text="清空"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button l:Uids.Uid="HomePage_ExportLog"
+                                        Command="{x:Bind Vm.ExportLogCommand}"
+                                        Height="32" Padding="8,0">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE8DE;" FontSize="12"/>
+                                        <TextBlock Text="导出"/>
+                                    </StackPanel>
+                                </Button>
+                                <DropDownButton x:Name="LogLevelFilter"
+                                                l:Uids.Uid="HomePage_LogFilter"
+                                                Height="32" Padding="8,0">
+                                    <StackPanel Orientation="Horizontal" Spacing="4">
+                                        <FontIcon Glyph="&#xE71C;" FontSize="12"/>
+                                        <TextBlock Text="筛选"/>
+                                    </StackPanel>
+                                    <DropDownButton.Flyout>
+                                        <MenuFlyout>
+                                            <ToggleMenuFlyoutItem Tag="All"
+                                                l:Uids.Uid="HomePage_LogFilter_All"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                            <MenuFlyoutSeparator/>
+                                            <ToggleMenuFlyoutItem Tag="UNKNOWN"
+                                                l:Uids.Uid="HomePage_LogFilter_Undefined"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                            <ToggleMenuFlyoutItem Tag="DEBUG"
+                                                l:Uids.Uid="HomePage_LogFilter_Debug"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                            <ToggleMenuFlyoutItem Tag="INFO"
+                                                l:Uids.Uid="HomePage_LogFilter_Info"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                            <ToggleMenuFlyoutItem Tag="WARN"
+                                                l:Uids.Uid="HomePage_LogFilter_Warn"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                            <ToggleMenuFlyoutItem Tag="ERROR"
+                                                l:Uids.Uid="HomePage_LogFilter_Error"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                            <ToggleMenuFlyoutItem Tag="FATAL"
+                                                l:Uids.Uid="HomePage_LogFilter_Fatal"
+                                                IsChecked="True"
+                                                Click="LogLevelFilter_MenuClick"/>
+                                        </MenuFlyout>
+                                    </DropDownButton.Flyout>
+                                </DropDownButton>
+                            </StackPanel>
+
+                            <Border Grid.Row="2" CornerRadius="8" Padding="12" MinHeight="200"
+                                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                                    BorderThickness="1">
+                                <ScrollViewer x:Name="LogScroll" VerticalScrollBarVisibility="Auto">
+                                    <ItemsRepeater ItemsSource="{x:Bind Vm.LogLines}">
+                                        <ItemsRepeater.Layout>
+                                            <StackLayout Spacing="2"/>
+                                        </ItemsRepeater.Layout>
+                                        <ItemsRepeater.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}"
+                                                   TextWrapping="Wrap"
+                                                   FontSize="13"
+                                                   Padding="2"
+                                                   IsTextSelectionEnabled="True"/>
+                                            </DataTemplate>
+                                        </ItemsRepeater.ItemTemplate>
+                                    </ItemsRepeater>
+                                </ScrollViewer>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+
+                <!-- 右侧：防护状态和统计 -->
+                <StackPanel Grid.Column="1" Margin="12,0,0,0" Spacing="12">
+                    <!-- 防护状态详情 -->
+                    <Border CornerRadius="12" Padding="20"
+                            Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                            BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                                <FontIcon Glyph="&#xE8BD;" FontSize="20" 
+                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock l:Uids.Uid="HomePage_ProtectionStatus" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- 防护状态 -->
+                                <Grid Grid.Row="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="防护状态" Grid.Column="0" 
+                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{x:Bind Vm.ProtectionStatus, Mode=OneWay}"
+                                               Foreground="{x:Bind Vm.ProtectionColor, Mode=OneWay}"/>
+                                </Grid>
+
+                                <!-- 上次扫描 -->
+                                <Grid Grid.Row="1" Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="上次扫描" Grid.Column="0" 
+                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{x:Bind Vm.LastScanTime, Mode=OneWay}"/>
+                                </Grid>
+
+                                <!-- 威胁数量 -->
+                                <Grid Grid.Row="2" Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="威胁数量" Grid.Column="0" 
+                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
+                                    <TextBlock Grid.Column="1"
+                                               Text="{x:Bind Vm.ThreatCount, Mode=OneWay}"/>
+                                </Grid>
+
+                                <!-- 实时防护 -->
+                                <Border Grid.Row="3" CornerRadius="8" Padding="12" Margin="0,16,0,8"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <FontIcon Grid.Column="0" Glyph="&#xE74C;" FontSize="20" Foreground="Green" Margin="0,0,12,0"/>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock l:Uids.Uid="HomePage_RealTimeProtection" FontWeight="SemiBold" FontSize="14"/>
+                                            <TextBlock l:Uids.Uid="HomePage_RealTimeProtectionDesc" FontSize="11" Foreground="Gray"/>
+                                        </StackPanel>
+                                        <ToggleSwitch x:Name="RealTimeProtectionToggle" Grid.Column="2" MinWidth="0" Toggled="OnRealTimeProtectionToggled"/>
+                                    </Grid>
+                                </Border>
+
+                                <!-- 文件防护 -->
+                                <Border Grid.Row="4" CornerRadius="8" Padding="12"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <FontIcon Grid.Column="0" Glyph="&#xE704;" FontSize="20" Foreground="Blue" Margin="0,0,12,0"/>
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock l:Uids.Uid="HomePage_FileProtection" FontWeight="SemiBold" FontSize="14"/>
+                                            <TextBlock l:Uids.Uid="HomePage_FileProtectionDesc" FontSize="11" Foreground="Gray"/>
+                                        </StackPanel>
+                                        <ToggleSwitch x:Name="FileProtectionToggle" Grid.Column="2" MinWidth="0" Toggled="OnFileProtectionToggled"/>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!-- 扫描统计详情 -->
+                    <Border CornerRadius="12" Padding="20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                                <FontIcon Glyph="&#xE9D2;" FontSize="20" 
+                                          VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                <TextBlock l:Uids.Uid="HomePage_Scan" 
+                                           FontSize="18" FontWeight="Bold" 
+                                           VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <Grid Grid.Row="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Border Grid.Row="0" CornerRadius="8" Padding="16" Margin="0,0,0,16"
+                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                                        BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                                        BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                                            <TextBlock l:Uids.Uid="HomePage_TotalScans" 
+                                                       FontSize="14" FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{x:Bind Vm.TotalScans, Mode=OneWay}"
+                                                       FontSize="24" FontWeight="Bold"
+                                                       HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                                            <TextBlock l:Uids.Uid="HomePage_TotalThreats" 
+                                                       FontSize="14" FontWeight="SemiBold"
+                                                       HorizontalAlignment="Center"/>
+                                            <TextBlock Text="{x:Bind Vm.TotalThreats, Mode=OneWay}"
+                                                       FontSize="24" FontWeight="Bold"
+                                                       HorizontalAlignment="Center" Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+
+                                <Button Grid.Row="1" l:Uids.Uid="HomePage_RefreshStatistics"
+                                        Command="{x:Bind Vm.RefreshStatisticsCommand}"
+                                        HorizontalAlignment="Stretch" Height="40">
+                                    <StackPanel Orientation="Horizontal" Spacing="8">
+                                        <FontIcon Glyph="&#xE72C;" FontSize="16"/>
+                                        <TextBlock Text="刷新统计"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Border>
+
+                    <!-- 最近扫描活动 -->
+                    <Border CornerRadius="12" Padding="20"
+                              Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                              BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                              BorderThickness="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Text="最近扫描活动" FontWeight="SemiBold" FontSize="16" Margin="0,0,0,12"/>
+
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                <TextBlock Text="暂无扫描记录" Foreground="Gray" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </ScrollViewer>
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

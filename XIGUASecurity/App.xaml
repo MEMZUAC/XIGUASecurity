@@ -1,0 +1,21 @@
+<Application
+    x:Class="XIGUASecurity.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="using:XIGUASecurity.Converters">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <!-- WinUI 资源 -->
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- 转换器 -->
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+        
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
+
+

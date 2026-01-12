@@ -1,0 +1,7 @@
+<Window x:Class="Code_Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid>
+        <local:CodeEditorPage xmlns:local="using:Code_Editor"/>
+    </Grid>
+</Window>

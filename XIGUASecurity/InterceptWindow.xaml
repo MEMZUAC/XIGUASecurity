@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="XIGUASecurity.InterceptWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:l="using:WinUI3Localizer"
+    mc:Ignorable="d">
+    <Window.SystemBackdrop>
+        <MicaBackdrop />
+    </Window.SystemBackdrop>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶部标题区域 -->
+        <Border Grid.Row="0" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="24,20">
+            <Grid ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <!-- 威胁图标 -->
+                <Border Grid.Column="0" Background="{ThemeResource SystemControlBackgroundAccentBrush}" CornerRadius="50" Width="48" Height="48" Padding="12">
+                    <FontIcon Glyph="&#xE7BA;" FontSize="24" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                
+                <!-- 标题信息 -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="安全威胁已拦截" FontSize="20" FontWeight="SemiBold" Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                    <TextBlock x:Name="ThreatLevelText" Text="高危威胁" FontSize="14" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" Margin="0,4,0,0"/>
+                </StackPanel>
+                
+                <!-- 威胁等级标签 -->
+                <Border Grid.Column="2" x:Name="ThreatLevelBadgeContainer" Background="{ThemeResource SystemControlBackgroundAccentBrush}" CornerRadius="12" Padding="12,6">
+                    <TextBlock x:Name="ThreatLevelBadge" Text="高危" FontWeight="SemiBold" Foreground="White" FontSize="12"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- 主要内容区域 -->
+        <ScrollViewer Grid.Row="1" Padding="24,20">
+            <StackPanel Spacing="20">
+                <!-- 威胁分析卡片 -->
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Text="威胁详情" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                        
+                        <Grid Grid.Row="1" ColumnSpacing="16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- 文件图标 -->
+                            <Border Grid.Column="0" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="8" Width="56" Height="56" Padding="12">
+                                <Image x:Name="FileIcon" Width="32" Height="32" Stretch="Uniform"/>
+                            </Border>
+                            
+                            <!-- 文件信息 -->
+                            <StackPanel Grid.Column="1" Spacing="6" VerticalAlignment="Center">
+                                <TextBlock x:Name="FileName" Text="文件名.exe" FontWeight="SemiBold" FontSize="16"/>
+                                <TextBlock x:Name="FilePath" Text="C:\Path\To\File.exe" Foreground="{ThemeResource SystemControlForegroundBaseMediumBrush}" TextWrapping="Wrap"/>
+                                <Grid ColumnSpacing="12" Margin="0,8,0,0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Border Grid.Column="0" Background="{ThemeResource SystemControlBackgroundAccentBrush}" CornerRadius="4" Padding="8,4">
+                                        <TextBlock x:Name="FileType" Text="可执行文件" FontSize="11" Foreground="White"/>
+                                    </Border>
+                                    
+                                    <Border Grid.Column="1" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="4" Padding="8,4">
+                                        <TextBlock x:Name="FileSize" Text="2.3 MB" FontSize="11" Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                                    </Border>
+                                    
+                                    <Border Grid.Column="2" Background="{ThemeResource LayerFillColorDefaultBrush}" CornerRadius="4" Padding="8,4">
+                                        <TextBlock x:Name="ModifyDate" Text="2023-12-28" FontSize="11" Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
+                                    </Border>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- 文件信息卡片 -->
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Text="威胁分析" FontSize="16" FontWeight="SemiBold" Margin="0,0,0,16"/>
+                        
+                        <Grid Grid.Row="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <!-- 威胁类型 -->
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="威胁类型：" VerticalAlignment="Center" Margin="0,0,16,0"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" x:Name="ThreatType" Text="Trojan.Generic" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            
+                            <!-- 扫描引擎 -->
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="扫描引擎：" VerticalAlignment="Center" Margin="0,12,16,0"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" x:Name="EngineNameText" Text="Xdows Security Engine v3.2" VerticalAlignment="Center" Margin="0,12,0,0"/>
+                            
+                            <!-- 威胁行为 -->
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="威胁行为：" VerticalAlignment="Center" Margin="0,12,16,0"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" x:Name="ThreatBehavior" Text="尝试修改系统关键文件，创建计划任务，建立网络连接" VerticalAlignment="Center" Margin="0,12,0,0" TextWrapping="Wrap"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+
+                <!-- 安全建议卡片 -->
+                <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" 
+                        BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                        BorderThickness="1" 
+                        CornerRadius="8" 
+                        Padding="20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Grid Grid.Row="0" ColumnSpacing="8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <FontIcon Grid.Column="0" Glyph="&#xE946;" FontSize="16" Foreground="{ThemeResource SystemControlForegroundAccentBrush}" VerticalAlignment="Center"/>
+                            <TextBlock Grid.Column="1" Text="安全建议" FontSize="16" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        </Grid>
+                        
+                        <TextBlock Grid.Row="1" x:Name="SecurityAdvice" 
+                                   Text="建议立即隔离此文件，以防止对系统造成潜在损害。此文件可能包含恶意代码，会危害您的计算机安全。"
+                                   TextWrapping="Wrap" 
+                                   Margin="0,12,0,0"
+                                   LineHeight="20"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- 底部操作区域 -->
+        <Border Grid.Row="2" Background="{ThemeResource LayerFillColorDefaultBrush}" Padding="24,20">
+            <Grid ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" 
+                           Text="请选择处理方式：" 
+                           FontSize="14" 
+                           VerticalAlignment="Center"
+                           FontWeight="Medium"/>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+                    <DropDownButton x:Name="ActionDropDownButton" 
+                                   Content="选择操作">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="Bottom">
+                                <MenuFlyoutItem x:Name="AllowMenuItem" Text="允许执行" Click="AllowMenuItem_Click"/>
+                                <MenuFlyoutItem x:Name="QuarantineMenuItem" Text="隔离文件" Click="QuarantineMenuItem_Click"/>
+                                <MenuFlyoutSeparator/>
+                                <MenuFlyoutItem x:Name="DeleteMenuItem" Text="删除文件" Click="DeleteMenuItem_Click"/>
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

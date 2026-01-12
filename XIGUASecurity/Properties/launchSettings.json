@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "XIGUASecurity (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "XIGUASecurity (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

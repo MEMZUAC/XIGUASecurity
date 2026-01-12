@@ -1,0 +1,49 @@
+<p align="center">
+  <a href="https://github.com/XTY64XTY12345/XIGUASecurity">
+    <img src=".\XIGUASecurity\logo.ico" alt="Logo" width="80" height="80">
+  </a>
+
+  <h3 align="center">XIGUASecurity 4.0</h3>
+  <p align="center">
+    Check out the next-generation antivirus software built on WinUI3 + C# technology
+    <br />
+    <a href="https://xty64xty.netlify.app/zh/Xdows-Security-4.1/get-started.html ">Documentation</a>
+    ·
+    <a href="https://github.com/XTY64XTY12345/XIGUASecurity/issues ">Feedback</a>
+    ·
+    <a href="https://github.com/XTY64XTY12345/XIGUASecurity/releases ">Download</a>
+    <br />
+    English
+    ·
+    <a href="README.zh-HANS.md">简体中文</a>
+  </p>
+
+</p>
+
+
+### Usage
+
+#### Direct Use
+
+1. Open the [download page](https://github.com/XTY64XTY12345/XIGUASecurity/releases) to download the latest version of `XIGUASecurity.zip`
+2. Extract the zip file to the target location and run `XIGUASecurity.exe`
+
+#### Compile and Run
+
+1. Environment requirements:
+    1. Windows 10/11
+    2. Install VS2022 or higher and related workloads
+    3. Install Git and ensure normal access to GitHub.
+2. Clone the repository
+```sh
+git clone https://github.com/XTY64XTY12345/XIGUASecurity 
+```
+3. Open with VS and build
+
+> Unable to build
+> 
+> Because the SouXiao provider `Mint` does not open source its related content, simply remove references related to SouXiao
+
+### Copyright Notice
+
+This project is licensed under the MIT License, please see [LICENSE](LICENSE.txt) for details.
