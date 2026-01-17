@@ -33,11 +33,66 @@
             border: 1px solid #ced4da;
             border-radius: 4px;
         }
+        .navbar {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+        }
+        .validation-errors {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .validation-errors ul {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
+    <!-- 导航栏 -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url_for('admin') }}">
+                <i class="bi bi-megaphone"></i> 公告管理系统
+            </a>
+            
+            <div class="navbar-nav ms-auto">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle user-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle"></i> {{ session.username }}
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('change_password') }}">
+                            <i class="bi bi-key"></i> 修改密码
+                        </a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{{ url_for('logout') }}">
+                            <i class="bi bi-box-arrow-right"></i> 退出登录
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-4">
-        <h1 class="mb-4"><i class="bi bi-megaphone"></i> 公告管理系统</h1>
+        <!-- 消息提示 -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else 'success' }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
         
         <!-- 添加公告按钮 -->
         <div class="mb-4">
@@ -68,6 +123,16 @@
                     <div class="card-body">
                         <div class="text-muted small mb-2">
                             <i class="bi bi-clock"></i> {{ announcement.publish_date }}
+                            {% if announcement.author %}
+                            <span class="ms-2"><i class="bi bi-person"></i> {{ announcement.author }}</span>
+                            {% endif %}
+                            {% if announcement.last_modified %}
+                            <div class="mt-1"><i class="bi bi-pencil-square"></i> 最后修改: {{ announcement.last_modified }}
+                                {% if announcement.last_modified_by %}
+                                <span class="ms-1">by {{ announcement.last_modified_by }}</span>
+                                {% endif %}
+                            </div>
+                            {% endif %}
                         </div>
                         <div class="card-text">
                             {{ announcement.content[:100] }}{% if announcement.content|length > 100 %}...{% endif %}
@@ -98,19 +163,28 @@
                         <input type="hidden" id="announcementId" name="id">
                         
                         <div class="mb-3">
-                            <label for="title" class="form-label">标题</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
+                            <label for="title" class="form-label">标题 <span class="text-muted">(最多100字符)</span></label>
+                            <input type="text" class="form-control" id="title" name="title" required maxlength="100">
+                            <div class="form-text">请输入公告标题，不能包含敏感内容</div>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="content" class="form-label">内容</label>
-                            <textarea class="content-editor" id="content" name="content" rows="10" required></textarea>
-                            <div class="form-text">支持HTML格式，例如：&lt;b&gt;粗体&lt;/b&gt;、&lt;i&gt;斜体&lt;/i&gt;、&lt;br&gt;换行</div>
+                            <label for="content" class="form-label">内容 <span class="text-muted">(最多5000字符)</span></label>
+                            <textarea class="form-control content-editor" id="content" name="content" required maxlength="5000"></textarea>
+                            <div class="form-text">支持HTML格式，如<b>粗体</b>、<i>斜体</i>、<br>换行等</div>
                         </div>
                         
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="isImportant" name="is_important">
-                            <label class="form-check-label" for="isImportant">重要公告</label>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="is_important" name="is_important">
+                                <label class="form-check-label" for="is_important">
+                                    标记为重要公告
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div id="validationErrors" class="validation-errors" style="display: none;">
+                            <ul></ul>
                         </div>
                     </form>
                 </div>
@@ -121,53 +195,49 @@
             </div>
         </div>
     </div>
-    
+
     <script>
-        // 重置表单
-        function resetForm() {
-            document.getElementById('announcementForm').reset();
-            document.getElementById('announcementId').value = '';
-            document.getElementById('announcementModalLabel').textContent = '添加公告';
-            document.getElementById('content').value = '';
-        }
-        
         // 编辑公告
         function editAnnouncement(id) {
+            // 获取公告数据
             fetch(`/api/announcements/${id}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('announcementId').value = data.id;
                     document.getElementById('title').value = data.title;
-                    document.getElementById('isImportant').checked = data.is_important;
                     document.getElementById('content').value = data.content;
-                    
+                    document.getElementById('is_important').checked = data.is_important;
                     document.getElementById('announcementModalLabel').textContent = '编辑公告';
                     
+                    // 显示模态框
                     const modal = new bootstrap.Modal(document.getElementById('announcementModal'));
                     modal.show();
                 })
                 .catch(error => {
-                    console.error('获取公告失败:', error);
-                    alert('获取公告失败');
+                    console.error('获取公告数据失败:', error);
+                    alert('获取公告数据失败，请重试');
                 });
         }
         
         // 删除公告
         function deleteAnnouncement(id) {
-            if (confirm('确定要删除这条公告吗？')) {
+            if (confirm('确定要删除这条公告吗？此操作不可恢复。')) {
                 fetch(`/api/announcements/${id}`, {
                     method: 'DELETE'
                 })
                 .then(response => {
-                    if (response.ok) {
+                    if (response.status === 204) {
+                        // 删除成功，刷新页面
                         location.reload();
                     } else {
-                        alert('删除失败');
+                        return response.json().then(data => {
+                            throw new Error(data.error || '删除失败');
+                        });
                     }
                 })
                 .catch(error => {
-                    console.error('删除失败:', error);
-                    alert('删除失败');
+                    console.error('删除公告失败:', error);
+                    alert('删除公告失败: ' + error.message);
                 });
             }
         }
@@ -175,22 +245,36 @@
         // 保存公告
         function saveAnnouncement() {
             const id = document.getElementById('announcementId').value;
-            const title = document.getElementById('title').value;
-            const content = document.getElementById('content').value;
-            const isImportant = document.getElementById('isImportant').checked;
+            const title = document.getElementById('title').value.trim();
+            const content = document.getElementById('content').value.trim();
+            const isImportant = document.getElementById('is_important').checked;
+            const validationErrors = document.getElementById('validationErrors');
+            const errorsList = validationErrors.querySelector('ul');
             
-            if (!title || !content) {
-                alert('标题和内容不能为空');
+            // 清空之前的错误信息
+            errorsList.innerHTML = '';
+            validationErrors.style.display = 'none';
+            
+            // 基本验证
+            if (!title) {
+                showError('标题不能为空');
                 return;
             }
             
+            if (!content) {
+                showError('内容不能为空');
+                return;
+            }
+            
+            // 准备表单数据
             const formData = new FormData();
             formData.append('title', title);
             formData.append('content', content);
             formData.append('is_important', isImportant);
             
-            const method = id ? 'PUT' : 'POST';
+            // 发送请求
             const url = id ? `/api/announcements/${id}` : '/api/announcements';
+            const method = id ? 'PUT' : 'POST';
             
             fetch(url, {
                 method: method,
@@ -198,20 +282,57 @@
             })
             .then(response => {
                 if (response.ok) {
+                    // 保存成功，刷新页面
                     location.reload();
                 } else {
-                    alert('保存失败');
+                    return response.json().then(data => {
+                        throw new Error(data.error || '保存失败');
+                    });
                 }
             })
             .catch(error => {
-                console.error('保存失败:', error);
-                alert('保存失败');
+                console.error('保存公告失败:', error);
+                if (error.message && error.message.includes('输入验证失败')) {
+                    // 显示验证错误
+                    // 这里需要从错误响应中获取详细信息
+                    fetch(url, {
+                        method: method,
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.details && Array.isArray(data.details)) {
+                            data.details.forEach(detail => {
+                                showError(detail);
+                            });
+                        } else {
+                            showError(error.message);
+                        }
+                    });
+                } else {
+                    alert('保存公告失败: ' + error.message);
+                }
             });
         }
         
-        // 模态框关闭时重置表单
+        // 显示错误信息
+        function showError(message) {
+            const validationErrors = document.getElementById('validationErrors');
+            const errorsList = validationErrors.querySelector('ul');
+            
+            const li = document.createElement('li');
+            li.textContent = message;
+            errorsList.appendChild(li);
+            validationErrors.style.display = 'block';
+        }
+        
+        // 重置表单
         document.getElementById('announcementModal').addEventListener('hidden.bs.modal', function () {
-            resetForm();
+            document.getElementById('announcementForm').reset();
+            document.getElementById('announcementId').value = '';
+            document.getElementById('announcementModalLabel').textContent = '添加公告';
+            document.getElementById('validationErrors').style.display = 'none';
+            document.getElementById('validationErrors').querySelector('ul').innerHTML = '';
         });
     </script>
 </body>

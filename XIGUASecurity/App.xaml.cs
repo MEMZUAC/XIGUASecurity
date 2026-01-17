@@ -685,7 +685,7 @@ namespace XIGUASecurity
                                             Content = "文档保护功能未启用，无法回滚修改。",
                                             CloseButtonText = "确定",
                                             DefaultButton = ContentDialogButton.Close,
-                                            XamlRoot = MainWindow.Content?.XamlRoot ?? throw new InvalidOperationException("MainWindow.Content is null")
+                                            XamlRoot = MainWindow.Content?.XamlRoot ?? throw new InvalidOperationException("MainWindow.Content is null") ?? throw new InvalidOperationException("MainWindow.Content is null")
                                         };
                                         _ = await confirmDialog.ShowAsync();
                                         return;
