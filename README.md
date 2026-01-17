@@ -3,7 +3,7 @@
     <img src=".\XIGUASecurity\logo.ico" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">XIGUASecurity 4.0</h3>
+  <h3 align="center">XIGUASecurity10</h3>
   <p align="center">
     Check out the next-generation antivirus software built on WinUI3 + C# technology
     <br />
