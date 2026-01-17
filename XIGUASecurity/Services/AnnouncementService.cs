@@ -15,7 +15,7 @@ namespace XIGUASecurity.Services
 
         private readonly HttpClient _httpClient;
         private const string SETTINGS_KEY = "LastAnnouncementId";
-        private const string DEFAULT_SERVER_URL = "http://localhost:8080/api/announcements";
+        private const string DEFAULT_SERVER_URL = "http://103.118.245.82:4000/api/announcements";
 
         public string ServerUrl { get; set; } = DEFAULT_SERVER_URL;
 
