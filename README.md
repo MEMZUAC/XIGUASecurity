@@ -7,7 +7,6 @@
   <p align="center">
     Check out the next-generation antivirus software built on WinUI3 + C# technology
     <br />
-    
     <a href="https://github.com/MEMZUAC/XIGUASecurity/issues ">Feedback</a>
     ·
     <a href="https://github.com/MEMZUAC/XIGUASecurity/releases ">Download</a>
