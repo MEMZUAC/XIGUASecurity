@@ -846,29 +846,17 @@ Failed: {1} backups</value>
   <data name="SecurityPage_HandleThreatsButtonText" xml:space="preserve">
     <value>Handle Threats</value>
   </data>
-  <data name="HomePage_QuickScanButton.Content" xml:space="preserve">
+  <data name="HomePage_QuickScan.Content" xml:space="preserve">
     <value>Quick Scan</value>
   </data>
-  <data name="HomePage_SettingsButton.Content" xml:space="preserve">
+  <data name="HomePage_Settings.Content" xml:space="preserve">
     <value>Settings</value>
-  </data>
-  <data name="HomePage_RefreshPomes" xml:space="preserve">
-    <value>Refresh Quote</value>
-  </data>
-  <data name="HomePage_Refresh.Text" xml:space="preserve">
-    <value>Refresh</value>
   </data>
   <data name="HomePage_LatestAnnouncement.Text" xml:space="preserve">
     <value>Latest Announcement</value>
   </data>
   <data name="HomePage_LoadingAnnouncement.Text" xml:space="preserve">
     <value>Loading announcement...</value>
-  </data>
-  <data name="HomePage_RefreshStatisticsText.Text" xml:space="preserve">
-    <value>Refresh Statistics</value>
-  </data>
-  <data name="HomePage_PublishDate" xml:space="preserve">
-    <value>Published: {0}</value>
   </data>
   <data name="HomePage_Pomes" xml:space="preserve">
     <value>Light—cosmic dot; black hole its plotted ellipsis.
@@ -1007,6 +995,9 @@ Why not try XIGUA Security?</value>
   </data>
   <data name="HomePage_TotalThreats.Text" xml:space="preserve">
     <value>Threats Found</value>
+  </data>
+  <data name="HomePage_RefreshStatistics.Text" xml:space="preserve">
+    <value>Refresh Statistics</value>
   </data>
   <data name="HomePage_RefreshStatistics.Content" xml:space="preserve">
     <value>Refresh stats</value>

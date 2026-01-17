@@ -846,29 +846,17 @@
   <data name="SecurityPage_HandleThreatsButtonText" xml:space="preserve">
     <value>处理威胁</value>
   </data>
-  <data name="HomePage_QuickScanButton.Content" xml:space="preserve">
+  <data name="HomePage_QuickScan.Content" xml:space="preserve">
     <value>快速扫描</value>
   </data>
-  <data name="HomePage_SettingsButton.Content" xml:space="preserve">
+  <data name="HomePage_Settings.Content" xml:space="preserve">
     <value>设置</value>
-  </data>
-  <data name="HomePage_RefreshPomes" xml:space="preserve">
-    <value>刷新格言</value>
-  </data>
-  <data name="HomePage_Refresh.Text" xml:space="preserve">
-    <value>刷新</value>
   </data>
   <data name="HomePage_LatestAnnouncement.Text" xml:space="preserve">
     <value>最新公告</value>
   </data>
   <data name="HomePage_LoadingAnnouncement.Text" xml:space="preserve">
     <value>正在加载公告...</value>
-  </data>
-  <data name="HomePage_RefreshStatisticsText.Text" xml:space="preserve">
-    <value>刷新统计</value>
-  </data>
-  <data name="HomePage_PublishDate" xml:space="preserve">
-    <value>发布时间: {0}</value>
   </data>
   <data name="HomePage_Pomes" xml:space="preserve">
     <value>光是宇宙的标点，黑洞是它故意留的省略号.
@@ -1007,6 +995,9 @@
   </data>
   <data name="HomePage_TotalThreats.Text" xml:space="preserve">
     <value>发现威胁</value>
+  </data>
+  <data name="HomePage_RefreshStatistics.Text" xml:space="preserve">
+    <value>刷新统计</value>
   </data>
   <data name="HomePage_RefreshStatistics.Content" xml:space="preserve">
     <value>刷新统计信息</value>
