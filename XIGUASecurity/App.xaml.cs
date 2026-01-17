@@ -685,7 +685,7 @@ namespace XIGUASecurity
                                             Content = "文档保护功能未启用，无法回滚修改。",
                                             CloseButtonText = "确定",
                                             DefaultButton = ContentDialogButton.Close,
-                                            XamlRoot = MainWindow.Content.XamlRoot
+                                            XamlRoot = MainWindow.Content?.XamlRoot ?? throw new InvalidOperationException("MainWindow.Content is null")
                                         };
                                         _ = await confirmDialog.ShowAsync();
                                         return;
@@ -699,7 +699,7 @@ namespace XIGUASecurity
                                             Title = "回滚失败",
                                             Content = "无法获取文件列表信息。",
                                             CloseButtonText = "确定",
-                                            XamlRoot = MainWindow.Content.XamlRoot
+                                            XamlRoot = MainWindow.Content?.XamlRoot
                                         };
                                         _ = await errorDialog.ShowAsync();
                                         return;
@@ -718,7 +718,7 @@ namespace XIGUASecurity
                                             Title = "回滚失败",
                                             Content = "文件列表信息格式错误。",
                                             CloseButtonText = "确定",
-                                            XamlRoot = MainWindow.Content.XamlRoot
+                                            XamlRoot = MainWindow.Content?.XamlRoot
                                         };
                                         _ = await errorDialog.ShowAsync();
                                         return;
@@ -1127,19 +1127,19 @@ namespace XIGUASecurity
             if (announcement != null)
             {
                 await ShowAnnouncementDialog(announcement);
-                AnnouncementService.Instance.MarkAsRead(announcement.Id);
+                AnnouncementService.Instance.MarkAsRead(announcement.Id!);
             }
         }
         catch (Exception ex)
         {
-  
+            System.Diagnostics.Debug.WriteLine($"检查公告失败: {ex.Message}");
         }
     }
 
         /// <summary>
         /// 显示公告对话框
         /// </summary>
-        private static async Task ShowAnnouncementDialog(Services.Announcement announcement)
+        private static async Task ShowAnnouncementDialog(Services.Announcement? announcement)
         {
             try
             {
@@ -1149,7 +1149,7 @@ namespace XIGUASecurity
                     PrimaryButtonText = "我知道了",
                     CloseButtonText = "稍后查看",
                     DefaultButton = ContentDialogButton.Primary,
-                    XamlRoot = MainWindow.Content.XamlRoot
+                    XamlRoot = MainWindow.Content?.XamlRoot ?? throw new InvalidOperationException("MainWindow.Content is null")
                 };
 
                 // 创建滚动查看器
@@ -1172,7 +1172,7 @@ namespace XIGUASecurity
                 // 标题
                 var titleTextBlock = new TextBlock
                 {
-                    Text = announcement.Title,
+                    Text = announcement!.Title,
                     FontSize = 20,
                     FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
                     TextWrapping = TextWrapping.Wrap
@@ -1182,7 +1182,7 @@ namespace XIGUASecurity
                 // 发布日期
                 var dateTextBlock = new TextBlock
                 {
-                    Text = $"发布时间: {announcement.PublishDate}",
+                    Text = $"发布时间: {announcement!.PublishDate}",
                     FontSize = 12,
                     Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
                 };
@@ -1208,7 +1208,7 @@ namespace XIGUASecurity
                 var paragraph = new Microsoft.UI.Xaml.Documents.Paragraph();
                 
                 // 简单的HTML解析，支持基本标签
-                var content = announcement.Content;
+                var content = announcement!.Content;
                 var isBold = false;
                 var isItalic = false;
                 var currentRun = new Microsoft.UI.Xaml.Documents.Run();

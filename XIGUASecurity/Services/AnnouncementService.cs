@@ -10,7 +10,7 @@ namespace XIGUASecurity.Services
 {
     public class AnnouncementService
     {
-        private static AnnouncementService _instance;
+        private static AnnouncementService? _instance;
         public static AnnouncementService Instance => _instance ??= new AnnouncementService();
 
         private readonly HttpClient _httpClient;
@@ -28,7 +28,7 @@ namespace XIGUASecurity.Services
         /// 获取最新公告
         /// </summary>
         /// <returns>公告数据，如果没有新公告则返回null</returns>
-        public async Task<Announcement> GetLatestAnnouncementAsync()
+        public async Task<Announcement?> GetLatestAnnouncementAsync()
         {
             try
             {
@@ -45,11 +45,13 @@ namespace XIGUASecurity.Services
                     PropertyNameCaseInsensitive = true
                 });
 
-                if (announcement != null)
+                if (announcement == null)
                 {
-                    System.Diagnostics.Debug.WriteLine($"公告标题: {announcement.Title}");
-                    System.Diagnostics.Debug.WriteLine($"公告发布日期: {announcement.PublishDate}");
+                    return null;
                 }
+
+                System.Diagnostics.Debug.WriteLine($"公告标题: {announcement.Title}");
+                System.Diagnostics.Debug.WriteLine($"公告发布日期: {announcement.PublishDate}");
 
                 return announcement;
             }
@@ -74,7 +76,7 @@ namespace XIGUASecurity.Services
         /// 获取上次已读公告的ID
         /// </summary>
         /// <returns>公告ID</returns>
-        private string GetLastReadAnnouncementId()
+        private string? GetLastReadAnnouncementId()
         {
             var localSettings = ApplicationData.Current.LocalSettings;
             return localSettings.Values.TryGetValue(SETTINGS_KEY, out var value) ? value.ToString() : null;
@@ -84,16 +86,16 @@ namespace XIGUASecurity.Services
     public class Announcement
     {
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
         
         [JsonPropertyName("content")]
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
         
         [JsonPropertyName("publish_date")]
-        public string PublishDate { get; set; }
+        public string PublishDate { get; set; } = string.Empty;
         
         [JsonPropertyName("is_important")]
         public bool IsImportant { get; set; }
