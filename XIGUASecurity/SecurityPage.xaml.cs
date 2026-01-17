@@ -545,6 +545,7 @@ namespace XIGUASecurity
                 ScanStatusDetailText.Text = "准备扫描";
                 
                 BackToVirusListButton.Visibility = Visibility.Collapsed;
+                HandleThreatsButton.Visibility = Visibility.Collapsed;
                 PauseScanButton.Visibility = Visibility.Visible;
                 PauseScanButton.IsEnabled = false;
                 ResumeScanButton.Visibility = Visibility.Collapsed;
@@ -840,6 +841,13 @@ namespace XIGUASecurity
                         
                         PauseScanButton.Visibility = Visibility.Collapsed;
                         ResumeScanButton.Visibility = Visibility.Collapsed;
+                        
+                        // 如果有威胁，显示处理按钮
+                        if (_currentResults != null && _currentResults.Count > 0)
+                        {
+                            HandleThreatsButton.Visibility = Visibility.Visible;
+                        }
+                        
                         StopRadarAnimation();
                         // 恢复扫描模式显示为默认值
                         PathText.Text = Loc("SecurityPage_PathText_Default");
@@ -895,6 +903,84 @@ namespace XIGUASecurity
         private void OnBackToVirusListClick(object sender, RoutedEventArgs e)
         {
             OnBackList(VirusList.Visibility != Visibility.Visible);
+        }
+
+        private async void OnHandleThreatsClick(object sender, RoutedEventArgs e)
+        {
+            // 显示警告对话框，防止误删系统文件
+            var warningDialog = new ContentDialog
+            {
+                Title = "处理威胁",
+                Content = "您即将将所有检测到的威胁移入隔离区。请仔细检查威胁列表，防止误报造成删除正常系统文件，导致严重的损失。\n\n确定要继续吗？",
+                PrimaryButtonText = "继续处理",
+                CloseButtonText = "取消",
+                XamlRoot = this.XamlRoot
+            };
+
+            var result = await warningDialog.ShowAsync();
+            if (result == ContentDialogResult.Primary)
+            {
+                // 用户确认后，将所有威胁移入隔离区
+                await HandleAllThreats();
+            }
+        }
+
+        private async Task HandleAllThreats()
+        {
+            if (_currentResults == null || _currentResults.Count == 0)
+                return;
+
+            var successCount = 0;
+            var failCount = 0;
+
+            foreach (var threat in _currentResults.ToList()) // 创建副本，避免修改集合时出错
+            {
+                try
+                {
+                    // 将文件移入隔离区
+                    if (QuarantineManager.AddToQuarantine(threat.FilePath, threat.VirusName))
+                    {
+                        successCount++;
+                        // 从威胁列表中移除
+                        _dispatcherQueue.TryEnqueue(() => _currentResults?.Remove(threat));
+                    }
+                    else
+                    {
+                        failCount++;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    LogText.AddNewLog(LogLevel.ERROR, "Security - HandleThreats", $"处理威胁失败: {threat.FilePath}, 错误: {ex.Message}");
+                    failCount++;
+                }
+            }
+
+            // 更新威胁计数
+            _threatsFound -= successCount;
+            _filesSafe += successCount;
+            
+            _dispatcherQueue.TryEnqueue(() =>
+            {
+                UpdateScanStats(_filesScanned, _filesSafe, _threatsFound);
+                
+                // 如果所有威胁都处理完了，隐藏处理按钮
+                if (_currentResults?.Count == 0)
+                {
+                    HandleThreatsButton.Visibility = Visibility.Collapsed;
+                }
+            });
+
+            // 显示处理结果
+            var resultDialog = new ContentDialog
+            {
+                Title = "处理完成",
+                Content = $"成功处理 {successCount} 个威胁\n失败 {failCount} 个威胁",
+                CloseButtonText = "确定",
+                XamlRoot = this.XamlRoot
+            };
+
+            await resultDialog.ShowAsync();
         }
 
         private void OnBackList(bool isShow)

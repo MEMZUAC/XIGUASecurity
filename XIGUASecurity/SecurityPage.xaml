@@ -241,6 +241,13 @@
                                     <TextBlock l:Uids.Uid="SecurityPage_ResumeScanButtonText"/>
                                 </StackPanel>
                             </Button>
+                            
+                            <Button x:Name="HandleThreatsButton" Click="OnHandleThreatsClick" Visibility="Collapsed">
+                                <StackPanel Orientation="Horizontal" Spacing="8">
+                                    <FontIcon Glyph="&#xE8B7;"/>
+                                    <TextBlock x:Name="HandleThreatsButtonText" Text="处理威胁" l:Uids.Uid="SecurityPage_HandleThreatsButtonText"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                         
                         <!-- 威胁列表 -->
