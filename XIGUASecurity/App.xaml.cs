@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WinUI3Localizer;
 using XIGUASecurity.Protection;
+using XIGUASecurity.Services;
 using static XIGUASecurity.Protection.CallBack;
 
 namespace XIGUASecurity
@@ -501,6 +502,11 @@ namespace XIGUASecurity
                 {
                     Core.AssistantModeManager.Initialize(MainWindow);
                 }
+
+                // 检查并显示公告
+                // 延迟3秒，确保主窗口已完全加载
+                await Task.Delay(3000);
+                await CheckAndShowAnnouncement();
             }
             catch (Exception ex)
             {
@@ -1108,5 +1114,192 @@ namespace XIGUASecurity
             : RuntimeInformation.IsOSPlatform(OSPlatform.OSX) ? "macOS" : "Linux";
 
         public static string OsVersion => Environment.OSVersion.ToString();
+    
+
+    /// <summary>
+    /// 检查并显示公告
+    /// </summary>
+    private static async Task CheckAndShowAnnouncement()
+    {
+        try
+        {
+            var announcement = await AnnouncementService.Instance.GetLatestAnnouncementAsync();
+            if (announcement != null)
+            {
+                await ShowAnnouncementDialog(announcement);
+                AnnouncementService.Instance.MarkAsRead(announcement.Id);
+            }
+        }
+        catch (Exception ex)
+        {
+  
+        }
     }
-}
+
+        /// <summary>
+        /// 显示公告对话框
+        /// </summary>
+        private static async Task ShowAnnouncementDialog(Services.Announcement announcement)
+        {
+            try
+            {
+                var contentDialog = new ContentDialog
+                {
+                    Title = "系统公告",
+                    PrimaryButtonText = "我知道了",
+                    CloseButtonText = "稍后查看",
+                    DefaultButton = ContentDialogButton.Primary,
+                    XamlRoot = MainWindow.Content.XamlRoot
+                };
+
+                // 创建滚动查看器
+                var scrollViewer = new ScrollViewer
+                {
+                    MaxHeight = 400,
+                    HorizontalScrollMode = ScrollMode.Disabled,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled,
+                    VerticalScrollMode = ScrollMode.Auto,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+                };
+
+                // 创建内容布局
+                var stackPanel = new StackPanel
+                {
+                    Spacing = 16,
+                    MaxWidth = 600
+                };
+
+                // 标题
+                var titleTextBlock = new TextBlock
+                {
+                    Text = announcement.Title,
+                    FontSize = 20,
+                    FontWeight = Microsoft.UI.Text.FontWeights.SemiBold,
+                    TextWrapping = TextWrapping.Wrap
+                };
+                stackPanel.Children.Add(titleTextBlock);
+
+                // 发布日期
+                var dateTextBlock = new TextBlock
+                {
+                    Text = $"发布时间: {announcement.PublishDate}",
+                    FontSize = 12,
+                    Foreground = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.Gray)
+                };
+                stackPanel.Children.Add(dateTextBlock);
+
+                // 分隔线
+                var separator = new Microsoft.UI.Xaml.Shapes.Rectangle
+                {
+                    Height = 1,
+                    Fill = new Microsoft.UI.Xaml.Media.SolidColorBrush(Microsoft.UI.Colors.LightGray),
+                    Margin = new Microsoft.UI.Xaml.Thickness(0, 8, 0, 8)
+                };
+                stackPanel.Children.Add(separator);
+
+                // 内容 - 使用RichTextBlock支持HTML格式
+                var richTextBlock = new RichTextBlock
+                {
+                    FontSize = 14,
+                    TextWrapping = TextWrapping.Wrap
+                };
+                
+                // 解析HTML内容并添加到RichTextBlock
+                var paragraph = new Microsoft.UI.Xaml.Documents.Paragraph();
+                
+                // 简单的HTML解析，支持基本标签
+                var content = announcement.Content;
+                var isBold = false;
+                var isItalic = false;
+                var currentRun = new Microsoft.UI.Xaml.Documents.Run();
+                
+                // 使用更简单的方法解析HTML
+                var tagPattern = new System.Text.RegularExpressions.Regex(@"<(/?)(b|i|br)>");
+                var matches = tagPattern.Matches(content);
+                int lastIndex = 0;
+                
+                foreach (System.Text.RegularExpressions.Match match in matches)
+                {
+                    // 添加标签前的文本
+                    if (match.Index > lastIndex)
+                    {
+                        var textBefore = content.Substring(lastIndex, match.Index - lastIndex);
+                        if (!string.IsNullOrEmpty(textBefore))
+                        {
+                            if (isBold)
+                            {
+                                var bold = new Microsoft.UI.Xaml.Documents.Bold();
+                                bold.Inlines.Add(new Microsoft.UI.Xaml.Documents.Run { Text = textBefore });
+                                paragraph.Inlines.Add(bold);
+                            }
+                            else if (isItalic)
+                            {
+                                var italic = new Microsoft.UI.Xaml.Documents.Italic();
+                                italic.Inlines.Add(new Microsoft.UI.Xaml.Documents.Run { Text = textBefore });
+                                paragraph.Inlines.Add(italic);
+                            }
+                            else
+                            {
+                                paragraph.Inlines.Add(new Microsoft.UI.Xaml.Documents.Run { Text = textBefore });
+                            }
+                        }
+                    }
+                    
+                    // 处理标签
+                    var isClosingTag = match.Groups[1].Value == "/";
+                    var tagName = match.Groups[2].Value;
+                    
+                    if (tagName == "br")
+                    {
+                        paragraph.Inlines.Add(new Microsoft.UI.Xaml.Documents.LineBreak());
+                    }
+                    else if (tagName == "b")
+                    {
+                        isBold = !isClosingTag;
+                    }
+                    else if (tagName == "i")
+                    {
+                        isItalic = !isClosingTag;
+                    }
+                    
+                    lastIndex = match.Index + match.Length;
+                }
+                
+                // 添加最后的文本
+                if (lastIndex < content.Length)
+                {
+                    var remainingText = content.Substring(lastIndex);
+                    if (!string.IsNullOrEmpty(remainingText))
+                    {
+                        if (isBold)
+                        {
+                            var bold = new Microsoft.UI.Xaml.Documents.Bold();
+                            bold.Inlines.Add(new Microsoft.UI.Xaml.Documents.Run { Text = remainingText });
+                            paragraph.Inlines.Add(bold);
+                        }
+                        else if (isItalic)
+                        {
+                            var italic = new Microsoft.UI.Xaml.Documents.Italic();
+                            italic.Inlines.Add(new Microsoft.UI.Xaml.Documents.Run { Text = remainingText });
+                            paragraph.Inlines.Add(italic);
+                        }
+                        else
+                        {
+                            paragraph.Inlines.Add(new Microsoft.UI.Xaml.Documents.Run { Text = remainingText });
+                        }
+                    }
+                }
+                
+                richTextBlock.Blocks.Add(paragraph);
+                stackPanel.Children.Add(richTextBlock);
+
+                scrollViewer.Content = stackPanel;
+                contentDialog.Content = scrollViewer;
+                await contentDialog.ShowAsync();
+            }
+            catch (Exception ex)
+            {
+                LogText.AddNewLog(LogLevel.ERROR, "App", $"显示公告对话框失败: {ex.Message}");
+            }
+        }
+    } }

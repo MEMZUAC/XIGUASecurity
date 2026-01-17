@@ -310,7 +310,7 @@
 
                 <!-- 右侧：防护状态和统计 -->
                 <StackPanel Grid.Column="1" Margin="12,0,0,0" Spacing="12">
-                    <!-- 防护状态详情 -->
+                    <!-- 最新公告 -->
                     <Border CornerRadius="12" Padding="20"
                             Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
                             BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
@@ -322,99 +322,27 @@
                             </Grid.RowDefinitions>
 
                             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
-                                <FontIcon Glyph="&#xE8BD;" FontSize="20" 
+                                <FontIcon Glyph="&#xE8A2;" FontSize="20" 
                                           VerticalAlignment="Center" Margin="0,0,8,0"/>
-                                <TextBlock l:Uids.Uid="HomePage_ProtectionStatus" 
+                                <TextBlock Text="最新公告" 
                                            FontSize="18" FontWeight="Bold" 
                                            VerticalAlignment="Center"/>
                             </StackPanel>
 
-                            <Grid Grid.Row="1">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-
-                                <!-- 防护状态 -->
-                                <Grid Grid.Row="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="防护状态" Grid.Column="0" 
-                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{x:Bind Vm.ProtectionStatus, Mode=OneWay}"
-                                               Foreground="{x:Bind Vm.ProtectionColor, Mode=OneWay}"/>
-                                </Grid>
-
-                                <!-- 上次扫描 -->
-                                <Grid Grid.Row="1" Margin="0,8,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="上次扫描" Grid.Column="0" 
-                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{x:Bind Vm.LastScanTime, Mode=OneWay}"/>
-                                </Grid>
-
-                                <!-- 威胁数量 -->
-                                <Grid Grid.Row="2" Margin="0,8,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="威胁数量" Grid.Column="0" 
-                                               FontWeight="SemiBold" Margin="0,0,12,0"/>
-                                    <TextBlock Grid.Column="1"
-                                               Text="{x:Bind Vm.ThreatCount, Mode=OneWay}"/>
-                                </Grid>
-
-                                <!-- 实时防护 -->
-                                <Border Grid.Row="3" CornerRadius="8" Padding="12" Margin="0,16,0,8"
-                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                        BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
-                                        BorderThickness="1">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <FontIcon Grid.Column="0" Glyph="&#xE74C;" FontSize="20" Foreground="Green" Margin="0,0,12,0"/>
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock l:Uids.Uid="HomePage_RealTimeProtection" FontWeight="SemiBold" FontSize="14"/>
-                                            <TextBlock l:Uids.Uid="HomePage_RealTimeProtectionDesc" FontSize="11" Foreground="Gray"/>
-                                        </StackPanel>
-                                        <ToggleSwitch x:Name="RealTimeProtectionToggle" Grid.Column="2" MinWidth="0" Toggled="OnRealTimeProtectionToggled"/>
-                                    </Grid>
-                                </Border>
-
-                                <!-- 文件防护 -->
-                                <Border Grid.Row="4" CornerRadius="8" Padding="12"
-                                        Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-                                        BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
-                                        BorderThickness="1">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <FontIcon Grid.Column="0" Glyph="&#xE704;" FontSize="20" Foreground="Blue" Margin="0,0,12,0"/>
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                            <TextBlock l:Uids.Uid="HomePage_FileProtection" FontWeight="SemiBold" FontSize="14"/>
-                                            <TextBlock l:Uids.Uid="HomePage_FileProtectionDesc" FontSize="11" Foreground="Gray"/>
-                                        </StackPanel>
-                                        <ToggleSwitch x:Name="FileProtectionToggle" Grid.Column="2" MinWidth="0" Toggled="OnFileProtectionToggled"/>
-                                    </Grid>
-                                </Border>
-                            </Grid>
+                            <Border Grid.Row="1" CornerRadius="8" Padding="12" MinHeight="200"
+                                    Background="{ThemeResource LayerOnMicaBaseAltFillColorDefaultBrush}"
+                                    BorderBrush="{ThemeResource CardStrokeColorDefaultSolid}"
+                                    BorderThickness="1">
+                                <ScrollViewer x:Name="MainAnnouncementScroll" VerticalScrollBarVisibility="Auto">
+                                    <StackPanel x:Name="MainAnnouncementPanel" Spacing="12">
+                                        <!-- 公告内容将在这里动态加载 -->
+                                        <TextBlock Text="正在加载公告..." 
+                                                   FontSize="14" 
+                                                   Foreground="Gray"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </ScrollViewer>
+                            </Border>
                         </Grid>
                     </Border>
 

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>公告管理系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .announcement-card {
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        .announcement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .important-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+        }
+        .content-editor {
+            min-height: 200px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="mb-4"><i class="bi bi-megaphone"></i> 公告管理系统</h1>
+        
+        <!-- 添加公告按钮 -->
+        <div class="mb-4">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#announcementModal">
+                <i class="bi bi-plus-circle"></i> 添加新公告
+            </button>
+        </div>
+        
+        <!-- 公告列表 -->
+        <div class="row" id="announcementsList">
+            {% for announcement in announcements %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card announcement-card h-100 position-relative">
+                    {% if announcement.is_important %}
+                    <span class="important-badge">重要</span>
+                    {% endif %}
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">{{ announcement.title }}</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-1" onclick="editAnnouncement('{{ announcement.id }}')">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="deleteAnnouncement('{{ announcement.id }}')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-muted small mb-2">
+                            <i class="bi bi-clock"></i> {{ announcement.publish_date }}
+                        </div>
+                        <div class="card-text">
+                            {{ announcement.content[:100] }}{% if announcement.content|length > 100 %}...{% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12">
+                <div class="alert alert-info">
+                    <i class="bi bi-info-circle"></i> 暂无公告，点击上方按钮添加新公告。
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- 公告编辑模态框 -->
+    <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="announcementModalLabel">添加公告</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="announcementForm" enctype="multipart/form-data">
+                        <input type="hidden" id="announcementId" name="id">
+                        
+                        <div class="mb-3">
+                            <label for="title" class="form-label">标题</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="content" class="form-label">内容</label>
+                            <textarea class="content-editor" id="content" name="content" rows="10" required></textarea>
+                            <div class="form-text">支持HTML格式，例如：&lt;b&gt;粗体&lt;/b&gt;、&lt;i&gt;斜体&lt;/i&gt;、&lt;br&gt;换行</div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="isImportant" name="is_important">
+                            <label class="form-check-label" for="isImportant">重要公告</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" onclick="saveAnnouncement()">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 重置表单
+        function resetForm() {
+            document.getElementById('announcementForm').reset();
+            document.getElementById('announcementId').value = '';
+            document.getElementById('announcementModalLabel').textContent = '添加公告';
+            document.getElementById('content').value = '';
+        }
+        
+        // 编辑公告
+        function editAnnouncement(id) {
+            fetch(`/api/announcements/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('announcementId').value = data.id;
+                    document.getElementById('title').value = data.title;
+                    document.getElementById('isImportant').checked = data.is_important;
+                    document.getElementById('content').value = data.content;
+                    
+                    document.getElementById('announcementModalLabel').textContent = '编辑公告';
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('announcementModal'));
+                    modal.show();
+                })
+                .catch(error => {
+                    console.error('获取公告失败:', error);
+                    alert('获取公告失败');
+                });
+        }
+        
+        // 删除公告
+        function deleteAnnouncement(id) {
+            if (confirm('确定要删除这条公告吗？')) {
+                fetch(`/api/announcements/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('删除失败');
+                    }
+                })
+                .catch(error => {
+                    console.error('删除失败:', error);
+                    alert('删除失败');
+                });
+            }
+        }
+        
+        // 保存公告
+        function saveAnnouncement() {
+            const id = document.getElementById('announcementId').value;
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const isImportant = document.getElementById('isImportant').checked;
+            
+            if (!title || !content) {
+                alert('标题和内容不能为空');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('title', title);
+            formData.append('content', content);
+            formData.append('is_important', isImportant);
+            
+            const method = id ? 'PUT' : 'POST';
+            const url = id ? `/api/announcements/${id}` : '/api/announcements';
+            
+            fetch(url, {
+                method: method,
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert('保存失败');
+                }
+            })
+            .catch(error => {
+                console.error('保存失败:', error);
+                alert('保存失败');
+            });
+        }
+        
+        // 模态框关闭时重置表单
+        document.getElementById('announcementModal').addEventListener('hidden.bs.modal', function () {
+            resetForm();
+        });
+    </script>
+</body>
+</html>
