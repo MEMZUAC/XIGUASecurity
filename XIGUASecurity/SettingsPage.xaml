@@ -107,6 +107,11 @@
                             HeaderIcon="{ui:FontIcon Glyph=&#xF211;}">
                         <ToggleSwitch x:Name="ExtraDataToggle" Tag="ExtraData" Toggled="Toggled_SaveToggleData"  />
                     </controls:SettingsCard>
+                    <controls:SettingsCard
+                            l:Uids.Uid="SettingsPage_Scan_Local_ChineseNames"
+                            HeaderIcon="{ui:FontIcon Glyph=&#xE943;}">
+                        <ToggleSwitch x:Name="ChineseNamesToggle" Tag="ChineseNames" Toggled="Toggled_SaveToggleData"  />
+                    </controls:SettingsCard>
                 </controls:SettingsExpander.Items>
             </controls:SettingsExpander>
             <controls:SettingsExpander

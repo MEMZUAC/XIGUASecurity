@@ -837,6 +837,39 @@ Failed: {1} backups</value>
   <data name="SettingsPage_Scan_Local_ExtraData.Description" xml:space="preserve">
     <value>Add extra metadata to detected virus names</value>
   </data>
+  <data name="SettingsPage_Scan_Local_ChineseNames.Header" xml:space="preserve">
+    <value>Use Chinese Display</value>
+  </data>
+  <data name="SettingsPage_Scan_Local_ChineseNames.Description" xml:space="preserve">
+    <value>Display virus names in Chinese descriptions, such as "Trojan Program", "File-infected Virus", etc.</value>
+  </data>
+  <data name="SecurityPage_HandleThreatsButtonText" xml:space="preserve">
+    <value>Handle Threats</value>
+  </data>
+  <data name="HomePage_QuickScanButton.Content" xml:space="preserve">
+    <value>Quick Scan</value>
+  </data>
+  <data name="HomePage_SettingsButton.Content" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="HomePage_RefreshPomes" xml:space="preserve">
+    <value>Refresh Quote</value>
+  </data>
+  <data name="HomePage_Refresh.Text" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HomePage_LatestAnnouncement.Text" xml:space="preserve">
+    <value>Latest Announcement</value>
+  </data>
+  <data name="HomePage_LoadingAnnouncement.Text" xml:space="preserve">
+    <value>Loading announcement...</value>
+  </data>
+  <data name="HomePage_RefreshStatisticsText.Text" xml:space="preserve">
+    <value>Refresh Statistics</value>
+  </data>
+  <data name="HomePage_PublishDate" xml:space="preserve">
+    <value>Published: {0}</value>
+  </data>
   <data name="HomePage_Pomes" xml:space="preserve">
     <value>Light—cosmic dot; black hole its plotted ellipsis.
 Screens fake light with filters, like résumés fake life.

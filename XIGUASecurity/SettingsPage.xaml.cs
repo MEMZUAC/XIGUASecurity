@@ -125,6 +125,20 @@ namespace XIGUASecurity
                     PrimaryButtonStyle = (Style)Application.Current.Resources["AccentButtonStyle"]
                 }.ShowAsync();
             }
+            
+            // 如果额外数据关闭，则禁用中文显示选项
+            if (key == "ExtraData")
+            {
+                ChineseNamesToggle.IsEnabled = toggle.IsOn;
+                // 如果额外数据被关闭且中文显示是开启的，则关闭中文显示
+                if (!toggle.IsOn && ChineseNamesToggle.IsOn)
+                {
+                    ChineseNamesToggle.IsOn = false;
+                    var appSettings = ApplicationData.Current.LocalSettings;
+                    appSettings.Values["ChineseNames"] = false;
+                }
+            }
+            
             var settings = ApplicationData.Current.LocalSettings;
             settings.Values[key] = toggle.IsOn;
         }
@@ -137,6 +151,7 @@ namespace XIGUASecurity
                  ScanProgressToggle,
                  DeepScanToggle,
                  ExtraDataToggle,
+                 ChineseNamesToggle,
                  LocalScanToggle,
                  CzkCloudScanToggle,
                  JiSuSafeAXToggle,
@@ -171,6 +186,9 @@ namespace XIGUASecurity
             FilesToggle.IsOn = FilesProtection.IsEnabled();
             RegistryToggle.IsOn = RegistryProtection.IsEnabled();
             DocumentToggle.IsOn = DocumentProtection.IsEnabled();
+            
+            // 根据额外数据设置中文显示选项的可用性
+            ChineseNamesToggle.IsEnabled = ExtraDataToggle.IsOn;
         }
 
         private void LoadLanguageSetting()

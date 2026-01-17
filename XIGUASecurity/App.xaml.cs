@@ -493,6 +493,9 @@ namespace XIGUASecurity
 
                 // 初始化信任区管理器
                 XIGUASecurity.Protection.TrustManager.Initialize();
+                
+                // 初始化隔离区管理器
+                XIGUASecurity.Protection.QuarantineManager.Initialize();
 
                 await InitializeLocalizer();
                 InitializeMainWindow();

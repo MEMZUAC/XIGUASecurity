@@ -16,7 +16,7 @@ namespace Xdows.ScanEngine
             public string[]? ExportsName;
         }
 
-        public static async Task<string> LocalScanAsync(string path, bool deep, bool ExtraData)
+        public static async Task<string> LocalScanAsync(string path, bool deep, bool ExtraData, bool useChineseNames = false)
         {
             if (!File.Exists(path)) return string.Empty;
 
@@ -34,16 +34,17 @@ namespace Xdows.ScanEngine
                             if (!string.IsNullOrEmpty(scriptScanResult.threatName))
                             {
                                 // 只保留威胁名称，不要额外的后缀信息
-                                return scriptScanResult.threatName;
+                                var threatName = scriptScanResult.threatName;
+                                return useChineseNames ? ConvertToChineseName(threatName) : threatName;
                             }
                             else
                             {
-                                return $"code{scriptScanResult.score}";
+                                return useChineseNames ? "可疑脚本" : $"code{scriptScanResult.score}";
                             }
                         }
                         else
                         {
-                            return $"code{scriptScanResult.score}";
+                            return useChineseNames ? "可疑脚本" : $"code{scriptScanResult.score}";
                         }
                     }
                     return string.Empty;
@@ -94,19 +95,71 @@ namespace Xdows.ScanEngine
                     if (!string.IsNullOrEmpty(score.threatName))
                     {
                         // 只保留威胁名称，不要额外的后缀信息
-                        return score.threatName;
+                        var threatName = score.threatName;
+                        return useChineseNames ? ConvertToChineseName(threatName) : threatName;
                     }
                     else
                     {
-                        return $"code{score.score}";
+                        return useChineseNames ? "可疑程序" : $"code{score.score}";
                     }
                 }
                 else
                 {
-                    return $"code{score.score}";
+                    return useChineseNames ? "可疑程序" : $"code{score.score}";
                 }
             }
             return string.Empty;
+        }
+
+        /// <summary>
+        /// 将英文威胁名称转换为中文描述
+        /// </summary>
+        /// <param name="englishName">英文威胁名称</param>
+        /// <returns>中文威胁描述</returns>
+        private static string ConvertToChineseName(string englishName)
+        {
+            if (string.IsNullOrEmpty(englishName))
+                return "未知威胁";
+
+            // 根据威胁类型转换为中文描述
+            if (englishName.Contains("Trojan", StringComparison.OrdinalIgnoreCase) || 
+                englishName.Contains("Backdoor", StringComparison.OrdinalIgnoreCase))
+                return "木马程序";
+
+            if (englishName.Contains("Virus", StringComparison.OrdinalIgnoreCase))
+                return "文件感染型病毒";
+
+            if (englishName.Contains("Worm", StringComparison.OrdinalIgnoreCase))
+                return "蠕虫病毒";
+
+            if (englishName.Contains("Spyware", StringComparison.OrdinalIgnoreCase))
+                return "间谍软件";
+
+            if (englishName.Contains("Adware", StringComparison.OrdinalIgnoreCase))
+                return "广告软件";
+
+            if (englishName.Contains("Ransomware", StringComparison.OrdinalIgnoreCase))
+                return "勒索软件";
+
+            if (englishName.Contains("Rootkit", StringComparison.OrdinalIgnoreCase))
+                return "隐藏程序";
+
+            if (englishName.Contains("Packed", StringComparison.OrdinalIgnoreCase) ||
+                englishName.Contains("Obfuscated", StringComparison.OrdinalIgnoreCase))
+                return "加壳程序";
+
+            if (englishName.Contains("Downloader", StringComparison.OrdinalIgnoreCase))
+                return "下载器";
+
+            if (englishName.Contains("Keylogger", StringComparison.OrdinalIgnoreCase))
+                return "键盘记录器";
+
+            if (englishName.Contains("Generic", StringComparison.OrdinalIgnoreCase) ||
+                englishName.Contains("Heur", StringComparison.OrdinalIgnoreCase))
+                return "可疑程序";
+
+            // 默认返回可疑程序
+            return "可疑程序";
         }
         //public static string SignedAndValid = string.Empty;
 

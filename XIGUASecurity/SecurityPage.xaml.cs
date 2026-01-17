@@ -668,7 +668,9 @@ namespace XIGUASecurity
                             {
                                 if (UseLocalScan)
                                 {
-                                    string localResult = await ScanEngine.LocalScanAsync(file, DeepScan, ExtraData);
+                                    var settings = ApplicationData.Current.LocalSettings;
+                                    bool useChineseNames = (settings.Values["ChineseNames"] as bool?).GetValueOrDefault();
+                                    string localResult = await ScanEngine.LocalScanAsync(file, DeepScan, ExtraData, useChineseNames);
 
                                     if (!string.IsNullOrEmpty(localResult))
                                     {

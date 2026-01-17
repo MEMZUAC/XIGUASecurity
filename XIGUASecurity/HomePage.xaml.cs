@@ -11,6 +11,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Media;
 using XIGUASecurity.Services;
 using Microsoft.UI.Xaml.Documents;
+using WinUI3Localizer;
 
 namespace XIGUASecurity
 {
@@ -317,7 +318,7 @@ namespace XIGUASecurity
             // 添加发布日期
             var dateTextBlock = new TextBlock
             {
-                Text = $"发布时间: {announcement.PublishDate}",
+                Text = string.Format(Loc("HomePage_PublishDate"), announcement.PublishDate),
                 FontSize = 12,
                 Foreground = new SolidColorBrush(Microsoft.UI.Colors.Gray),
                 Margin = new Thickness(0, 4, 0, 8)
@@ -427,6 +428,20 @@ namespace XIGUASecurity
             
             richTextBlock.Blocks.Add(paragraph);
             MainAnnouncementPanel.Children.Add(richTextBlock);
+        }
+        
+        private string Loc(string key)
+        {
+            try
+            {
+                var s = Localizer.Get().GetLocalizedString(key);
+                if (!string.IsNullOrEmpty(s)) return s;
+                return key;
+            }
+            catch
+            {
+                return key;
+            }
         }
     }
 }
