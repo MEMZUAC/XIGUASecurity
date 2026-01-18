@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/XTY64XTY12345/XIGUASecurity">
+  <a href="https://github.com/MEMZUAC/XIGUASecurity">
     <img src=".\XIGUASecurity\logo.ico" alt="Logo" width="80" height="80">
   </a>
 
@@ -9,9 +9,9 @@
     <br />
     <a href="https://xty64xty.netlify.app/zh/Xdows-Security-4.1/get-started.html">文档</a>
     ·
-    <a href="https://github.com/XTY64XTY12345/XIGUASecurity/issues">反馈</a>
+    <a href="https://github.com/MEMZUAC/XIGUASecurity/issues">反馈</a>
     ·
-    <a href="https://github.com/XTY64XTY12345/XIGUASecurity/releases">下载</a>
+    <a href="https://github.com/MEMZUAC/XIGUASecurity/releases">下载</a>
     <br />
     <a href="README.md">English</a>
     ·
@@ -25,7 +25,7 @@
 
 #### 直接使用
 
-1. 打开 [下载页面](https://github.com/XTY64XTY12345/XIGUASecurity/releases) 下载最新版本的 `XIGUASecurity.zip`
+1. 打开 [下载页面](https://github.com/MEMZUAC/XIGUASecurity/releases) 下载最新版本的 `XIGUASecurity.zip`
 2. 解压压缩包到目标位置，运行 `XIGUASecurity.exe`
 
 #### 编译运行
@@ -36,7 +36,7 @@
     3. 安装 Git 并保证能正常访问 Github。
 2. 克隆仓库
 ```sh
-git clone https://github.com/XTY64XTY12345/XIGUASecurity
+git clone https://github.com/MEMZUAC/XIGUASecurity
 ```
 3. 使用 VS 打开并进行生成
 

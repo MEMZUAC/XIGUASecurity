@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/XTY64XTY12345/XIGUASecurity">
+  <a href="https://github.com/MEMZUAC/XIGUASecurity">
     <img src=".\XIGUASecurity\logo.ico" alt="Logo" width="80" height="80">
   </a>
 
@@ -23,18 +23,18 @@
 
 #### Direct Use
 
-1. Open the [download page](https://github.com/XTY64XTY12345/XIGUASecurity/releases) to download the latest version of `XIGUASecurity.zip`
+1. Open the [download page](https://github.com/MEMZUAC/XIGUASecurity/releases) to download the latest version of `XIGUASecurity.zip`
 2. Extract the zip file to the target location and run `XIGUASecurity.exe`
 
 #### Compile and Run
 
 1. Environment requirements:
     1. Windows 10/11
-    2. Install VS2022 or higher and related workloads
+    2. Install VS2026 or higher and related workloads
     3. Install Git and ensure normal access to GitHub.
 2. Clone the repository
 ```sh
-git clone https://github.com/XTY64XTY12345/XIGUASecurity 
+git clone https://github.com/MEMZUAC/XIGUASecurity 
 ```
 3. Open with VS and build
 
