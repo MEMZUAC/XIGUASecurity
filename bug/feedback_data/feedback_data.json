@@ -1,0 +1,38 @@
+{
+  "MEMZ-UAC_27e2825e": {
+    "id": "MEMZ-UAC_27e2825e",
+    "content": "11",
+    "username": "MEMZ-UAC",
+    "timestamp": "2026-01-18T12:58:11.056862",
+    "read_by": [
+      "MEMZ-UAC"
+    ]
+  },
+  "file_MEMZ-UAC_1768712318": {
+    "type": "file",
+    "id": "file_MEMZ-UAC_1768712318",
+    "name": "角色1.sprite3",
+    "size": 43857,
+    "username": "MEMZ-UAC",
+    "timestamp": "2026-01-18T12:58:38.322434",
+    "read_by": []
+  },
+  "file_MEMZ-UAC_1768713500": {
+    "type": "file",
+    "id": "file_MEMZ-UAC_1768713500",
+    "name": "角色1.sprite3",
+    "size": 43857,
+    "username": "MEMZ-UAC",
+    "timestamp": "2026-01-18T13:18:20.875755",
+    "read_by": []
+  },
+  "file_MEMZ-UAC_1768713610": {
+    "type": "file",
+    "id": "file_MEMZ-UAC_1768713610",
+    "name": "空文件2025.12.21 23-01-12.lab",
+    "size": 626,
+    "username": "MEMZ-UAC",
+    "timestamp": "2026-01-18T13:20:10.153612",
+    "read_by": []
+  }
+}

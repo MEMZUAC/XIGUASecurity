@@ -1707,4 +1707,60 @@
   <data name="AssistantModeDialog_SettingsNote" xml:space="preserve">
     <value>您可以随时在设置页面中更改此模式。</value>
   </data>
+  <data name="HomePage_RefreshPomesToolTip" xml:space="preserve">
+    <value>刷新格言</value>
+  </data>
+  <data name="HomePage_OperatingSystem" xml:space="preserve">
+    <value>操作系统</value>
+  </data>
+  <data name="HomePage_Version" xml:space="preserve">
+    <value>版本</value>
+  </data>
+  <data name="HomePage_MemoryUsage" xml:space="preserve">
+    <value>内存使用</value>
+  </data>
+  <data name="HomePage_Copy" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="HomePage_Refresh" xml:space="preserve">
+    <value>刷新</value>
+  </data>
+  <data name="HomePage_Clear" xml:space="preserve">
+    <value>清空</value>
+  </data>
+  <data name="HomePage_Export" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="HomePage_Filter" xml:space="preserve">
+    <value>筛选</value>
+  </data>
+  <data name="HomePage_RecentScanActivity" xml:space="preserve">
+    <value>最近扫描活动</value>
+  </data>
+  <data name="HomePage_NoScanRecords" xml:space="preserve">
+    <value>暂无扫描记录</value>
+  </data>
+  <data name="HomePage_UpdateDialog_Title" xml:space="preserve">
+    <value>发现新版本</value>
+  </data>
+  <data name="HomePage_UpdateDialog_Content" xml:space="preserve">
+    <value>发现新版本 {0}
+
+{1}</value>
+  </data>
+  <data name="HomePage_UpdateDialog_PrimaryButton" xml:space="preserve">
+    <value>立即更新</value>
+  </data>
+  <data name="HomePage_UpdateDialog_CloseButton" xml:space="preserve">
+    <value>稍后提醒</value>
+  </data>
+  <data name="HomePage_NoAnnouncement" xml:space="preserve">
+    <value>暂无公告</value>
+  </data>
+  <data name="HomePage_LoadAnnouncementFailed" xml:space="preserve">
+    <value>加载公告失败</value>
+  </data>
+  <data name="HomePage_PublishTime" xml:space="preserve">
+    <value>发布时间: {0}</value>
+  </data>
 </root>

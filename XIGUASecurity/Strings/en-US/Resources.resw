@@ -1711,4 +1711,60 @@ If you do not accept it, please turn off the engine, or stop using and delete th
   <data name="AssistantModeDialog_SettingsNote" xml:space="preserve">
     <value>You can change this mode at any time in the settings page.</value>
   </data>
+  <data name="HomePage_RefreshPomesToolTip" xml:space="preserve">
+    <value>Refresh quote</value>
+  </data>
+  <data name="HomePage_OperatingSystem" xml:space="preserve">
+    <value>Operating System</value>
+  </data>
+  <data name="HomePage_Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="HomePage_MemoryUsage" xml:space="preserve">
+    <value>Memory Usage</value>
+  </data>
+  <data name="HomePage_Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
+  <data name="HomePage_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="HomePage_Clear" xml:space="preserve">
+    <value>Clear</value>
+  </data>
+  <data name="HomePage_Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="HomePage_Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="HomePage_RecentScanActivity" xml:space="preserve">
+    <value>Recent Scan Activity</value>
+  </data>
+  <data name="HomePage_NoScanRecords" xml:space="preserve">
+    <value>No scan records</value>
+  </data>
+  <data name="HomePage_UpdateDialog_Title" xml:space="preserve">
+    <value>New Version Available</value>
+  </data>
+  <data name="HomePage_UpdateDialog_Content" xml:space="preserve">
+    <value>New version {0} available
+
+{1}</value>
+  </data>
+  <data name="HomePage_UpdateDialog_PrimaryButton" xml:space="preserve">
+    <value>Update Now</value>
+  </data>
+  <data name="HomePage_UpdateDialog_CloseButton" xml:space="preserve">
+    <value>Remind Later</value>
+  </data>
+  <data name="HomePage_NoAnnouncement" xml:space="preserve">
+    <value>No announcements</value>
+  </data>
+  <data name="HomePage_LoadAnnouncementFailed" xml:space="preserve">
+    <value>Failed to load announcements</value>
+  </data>
+  <data name="HomePage_PublishTime" xml:space="preserve">
+    <value>Published: {0}</value>
+  </data>
 </root>

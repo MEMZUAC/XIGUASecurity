@@ -1,0 +1,20 @@
+{
+  "MEMZUAC": {
+    "username": "MEMZUAC",
+    "avatar": "https://api.dicebear.com/7.x/lorelei/svg?seed=76417231641848151736904073241703352299",
+    "first_seen": "2026-01-18T10:59:25.046808",
+    "last_seen": "2026-01-18T11:06:30.448059"
+  },
+  "MEMZ-UAC": {
+    "username": "MEMZ-UAC",
+    "avatar": "https://api.dicebear.com/7.x/notionists/svg?seed=121536113592410805332575145724125532279",
+    "first_seen": "2026-01-18T11:07:00.491961",
+    "last_seen": "2026-01-18T14:22:01.775442"
+  },
+  "MEMZ-UAC1": {
+    "username": "MEMZ-UAC1",
+    "avatar": "https://api.dicebear.com/7.x/notionists/svg?seed=4044915111594482734642150794901435216",
+    "first_seen": "2026-01-18T12:00:58.124528",
+    "last_seen": "2026-01-18T14:27:42.035318"
+  }
+}

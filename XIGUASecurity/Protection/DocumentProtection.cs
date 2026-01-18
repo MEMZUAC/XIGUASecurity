@@ -69,8 +69,8 @@ namespace XIGUASecurity.Protection
             Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads")
         };
         
-        // 文件大小限制（100MB），超过此大小的文件不进行哈希计算
-        private const long MaxFileSizeForHash = 100 * 1024 * 1024;
+        // 文件大小限制（1.5GB），超过此大小的文件不进行哈希计算
+        private const long MaxFileSizeForHash = 1536 * 1024 * 1024;
         
         /// <summary>
         /// 格式化文件大小显示
