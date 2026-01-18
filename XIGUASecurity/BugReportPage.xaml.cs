@@ -1,61 +1,32 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using Windows.System;
-using WinUI3Localizer;
 
 namespace XIGUASecurity
 {
     public sealed partial class BugReportPage : Page
     {
         private FeedbackTCPClient? _tcpClient;
-        private Dictionary<string, string> _userAvatars = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _userAvatars = [];
         private string _currentUsername = "";
-        private Dictionary<string, ProgressBar> _uploadProgressBars = new Dictionary<string, ProgressBar>();
-        private Dictionary<string, TextBlock> _uploadStatusTexts = new Dictionary<string, TextBlock>();
-        private Dictionary<string, ProgressBar> _downloadProgressBars = new Dictionary<string, ProgressBar>();
-        private Dictionary<string, TextBlock> _downloadProgressTexts = new Dictionary<string, TextBlock>();
-        private Dictionary<string, TextBlock> _downloadStatusTexts = new Dictionary<string, TextBlock>();
+        private readonly Dictionary<string, ProgressBar> _uploadProgressBars = [];
+        private readonly Dictionary<string, TextBlock> _uploadStatusTexts = [];
+        private readonly Dictionary<string, ProgressBar> _downloadProgressBars = [];
+        private readonly Dictionary<string, TextBlock> _downloadProgressTexts = [];
+        private readonly Dictionary<string, TextBlock> _downloadStatusTexts = [];
 
-        private string Loc(string key)
-        {
-            try
-            {
-                var s = Localizer.Get().GetLocalizedString(key);
-                if (!string.IsNullOrEmpty(s)) return s;
-
-                string[] suffixes = new[] { ".Text", ".Content", ".Header", ".Title", ".Description" };
-                foreach (var suf in suffixes)
-                {
-                    s = Localizer.Get().GetLocalizedString(key + suf);
-                    if (!string.IsNullOrEmpty(s)) return s;
-                }
-
-                return string.Empty;
-            }
-            catch
-            {
-                return string.Empty;
-            }
-        }
 
         public BugReportPage()
         {
             InitializeComponent();
-            Loaded += async (_, __) => 
+            Loaded += async (_, __) =>
             {
                 try
                 {
@@ -75,7 +46,7 @@ namespace XIGUASecurity
         {
             Cleanup();
             _tcpClient = new FeedbackTCPClient();
-            
+
             // 使用系统账户名作为用户名
             string systemUsername = Environment.UserName;
             if (string.IsNullOrEmpty(_tcpClient.Username) || _tcpClient.Username != systemUsername)
@@ -87,45 +58,45 @@ namespace XIGUASecurity
                 catch (Exception ex)
                 {
                     AddSystemMessage($"设置用户名失败: {ex.Message}");
-                    StatusTxt.Text = Loc("BugReportPage_NotConnected");
+                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_NotConnected");
                     return;
                 }
             }
-            
+
             // 订阅事件
-            _tcpClient.OnConnected += (sender, message) => 
+            _tcpClient.OnConnected += (sender, message) =>
             {
-                DispatcherQueue.TryEnqueue(() => 
+                DispatcherQueue.TryEnqueue(() =>
                 {
-                    StatusTxt.Text = Loc("BugReportPage_Connected");
+                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_Connected");
                     // 不在这里添加连接消息，让HandleRegisterSuccess处理历史消息显示
                     // AddSystemMessage(message);
                 });
             };
-            
-            _tcpClient.OnDisconnected += (sender, message) => 
+
+            _tcpClient.OnDisconnected += (sender, message) =>
             {
-                DispatcherQueue.TryEnqueue(() => 
+                DispatcherQueue.TryEnqueue(() =>
                 {
-                    StatusTxt.Text = Loc("BugReportPage_Disconnected");
+                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_Disconnected");
                     AddSystemMessage(message);
                 });
             };
-            
-            _tcpClient.OnMessageReceived += async (sender, messageDict) => 
+
+            _tcpClient.OnMessageReceived += async (sender, messageDict) =>
             {
                 await HandleReceivedMessageAsync(messageDict);
             };
-            
-            _tcpClient.OnError += (sender, error) => 
+
+            _tcpClient.OnError += (sender, error) =>
             {
-                DispatcherQueue.TryEnqueue(() => 
+                DispatcherQueue.TryEnqueue(() =>
                 {
-                    StatusTxt.Text = Loc("BugReportPage_ConnectionFailed");
-                    AddSystemMessage(Loc("BugReportPage_ConnectionFailedMessage") + error);
+                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailed");
+                    AddSystemMessage(WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailedMessage") + error);
                 });
             };
-            
+
             // 尝试连接
             await _tcpClient.ConnectAsync();
         }
@@ -134,10 +105,10 @@ namespace XIGUASecurity
         {
             if (!messageDict.TryGetValue("type", out var typeObj))
                 return;
-                
+
             string type = typeObj.ToString() ?? "";
             System.Diagnostics.Debug.WriteLine($"收到消息类型: {type}");
-            
+
             DispatcherQueue.TryEnqueue(() =>
             {
                 System.Diagnostics.Debug.WriteLine($"收到消息类型: {type}, 内容: {System.Text.Json.JsonSerializer.Serialize(messageDict)}");
@@ -147,55 +118,55 @@ namespace XIGUASecurity
                         System.Diagnostics.Debug.WriteLine("处理register_success消息");
                         HandleRegisterSuccess(messageDict);
                         break;
-                        
+
                     case "new_message":
                         HandleNewMessage(messageDict);
                         break;
-                        
+
                     case "user_online":
                         HandleUserOnline(messageDict);
                         break;
-                        
+
                     case "user_offline":
                         HandleUserOffline(messageDict);
                         break;
-                        
+
                     case "file":
                         HandleFileMessage(messageDict);
                         break;
-                        
+
                     case "file_download_url":
                         System.Diagnostics.Debug.WriteLine("收到file_download_url消息，准备处理");
                         HandleFileDownloadUrl(messageDict);
                         break;
-                        
+
                     case "file_download_start":
                         HandleFileDownloadStart(messageDict);
                         break;
-                        
+
                     case "file_chunk":
                         HandleFileChunk(messageDict);
                         break;
-                        
+
                     case "file_download_complete":
                         HandleFileDownloadComplete(messageDict);
                         break;
-                        
+
                     case "read_status_update":
                         HandleReadStatusUpdate(messageDict);
                         break;
-                        
+
                     case "error":
                         HandleErrorMessage(messageDict);
                         break;
-                        
+
                     default:
                         System.Diagnostics.Debug.WriteLine($"未知消息类型: {type}");
                         break;
                 }
             });
         }
-        
+
         private void AddFileUploadMessage(string fileName, long fileSize, string username, string messageId)
         {
             // 确保在UI线程上执行
@@ -204,7 +175,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => AddFileUploadMessage(fileName, fileSize, username, messageId));
                 return;
             }
-            
+
             // 创建消息容器
             var container = new StackPanel
             {
@@ -236,7 +207,7 @@ namespace XIGUASecurity
             };
 
             avatar.Child = avatarText;
-            
+
             // 创建文件上传卡片
             var card = new Border
             {
@@ -292,7 +263,7 @@ namespace XIGUASecurity
                 MinHeight = 4,
                 Margin = new Thickness(0, 8, 0, 0)
             };
-            
+
             // 状态文本
             var statusText = new TextBlock
             {
@@ -309,11 +280,11 @@ namespace XIGUASecurity
             rootGrid.Children.Add(statusText);
 
             card.Child = rootGrid;
-            
+
             // 自己发送的消息：先添加消息卡片，再添加头像（头像在右边）
             container.Children.Add(card);
             container.Children.Add(avatar);
-            
+
             // 存储消息ID和进度条、状态文本的引用，以便后续更新
             _uploadProgressBars[messageId] = progressBar;
             _uploadStatusTexts[messageId] = statusText;
@@ -321,7 +292,7 @@ namespace XIGUASecurity
             MessagesPanel.Children.Add(container);
             ScrollToBottom();
         }
-        
+
         private void UpdateFileUploadProgress(string messageId, object progress)
         {
             // 确保在UI线程上执行
@@ -330,7 +301,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => UpdateFileUploadProgress(messageId, progress));
                 return;
             }
-            
+
             if (_uploadProgressBars.TryGetValue(messageId, out var progressBar) &&
                 _uploadStatusTexts.TryGetValue(messageId, out var statusText))
             {
@@ -353,7 +324,7 @@ namespace XIGUASecurity
                 }
             }
         }
-        
+
         private void AddFileDownloadMessage(string fileName, long fileSize, string username, string messageId)
         {
             // 确保在UI线程上执行
@@ -362,7 +333,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => AddFileDownloadMessage(fileName, fileSize, username, messageId));
                 return;
             }
-            
+
             // 创建消息容器
             var container = new StackPanel
             {
@@ -394,7 +365,7 @@ namespace XIGUASecurity
             };
 
             avatar.Child = avatarText;
-            
+
             // 创建文件下载卡片
             var card = new Border
             {
@@ -450,7 +421,7 @@ namespace XIGUASecurity
                 MinHeight = 4,
                 Margin = new Thickness(0, 8, 0, 0)
             };
-            
+
             // 状态文本
             var statusText = new TextBlock
             {
@@ -467,11 +438,11 @@ namespace XIGUASecurity
             rootGrid.Children.Add(statusText);
 
             card.Child = rootGrid;
-            
+
             // 他人发送的消息：先添加头像，再添加消息卡片（头像在左边）
             container.Children.Add(avatar);
             container.Children.Add(card);
-            
+
             // 存储消息ID和进度条、状态文本的引用，以便后续更新
             _downloadProgressBars[messageId] = progressBar;
             _downloadStatusTexts[messageId] = statusText;
@@ -479,7 +450,7 @@ namespace XIGUASecurity
             MessagesPanel.Children.Add(container);
             ScrollToBottom();
         }
-        
+
         private void UpdateFileDownloadProgress(string messageId, object progress)
         {
             // 确保在UI线程上执行
@@ -488,7 +459,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => UpdateFileDownloadProgress(messageId, progress));
                 return;
             }
-            
+
             if (_downloadProgressBars.TryGetValue(messageId, out var progressBar) &&
                 _downloadProgressTexts.TryGetValue(messageId, out var progressText))
             {
@@ -503,7 +474,7 @@ namespace XIGUASecurity
                     {
                         progressBar.Value = 100;
                         progressText.Text = status;
-                        
+
                         // 找到对应的下载按钮并启用它
                         foreach (var child in MessagesPanel.Children)
                         {
@@ -539,28 +510,28 @@ namespace XIGUASecurity
         private void HandleRegisterSuccess(Dictionary<string, object> messageDict)
         {
             System.Diagnostics.Debug.WriteLine($"HandleRegisterSuccess被调用，消息内容: {System.Text.Json.JsonSerializer.Serialize(messageDict)}");
-            
+
             // 确保在UI线程上执行
             if (!DispatcherQueue.HasThreadAccess)
             {
                 DispatcherQueue.TryEnqueue(() => HandleRegisterSuccess(messageDict));
                 return;
             }
-            
+
             try
             {
-                StatusTxt.Text = Loc("BugReportPage_Connected");
+                StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_Connected");
                 AddSystemMessage("已加入反馈频道");
-                
+
                 // 获取用户信息
-                if (messageDict.TryGetValue("user", out var userObj) && 
+                if (messageDict.TryGetValue("user", out var userObj) &&
                     userObj is JsonElement userElement)
                 {
                     if (userElement.TryGetProperty("username", out var usernameElement))
                     {
                         _currentUsername = usernameElement.GetString() ?? "";
                     }
-                    
+
                     if (userElement.TryGetProperty("avatar", out var avatarElement))
                     {
                         string avatar = avatarElement.GetString() ?? "";
@@ -570,17 +541,17 @@ namespace XIGUASecurity
                         }
                     }
                 }
-                
+
                 // 显示历史消息
-                if (messageDict.TryGetValue("recent_messages", out var messagesObj) && 
-                    messagesObj is JsonElement messagesElement && 
+                if (messageDict.TryGetValue("recent_messages", out var messagesObj) &&
+                    messagesObj is JsonElement messagesElement &&
                     messagesElement.ValueKind == JsonValueKind.Array)
                 {
                     System.Diagnostics.Debug.WriteLine($"收到 {messagesElement.GetArrayLength()} 条历史消息");
-                    
+
                     // 先清空当前消息显示
                     MessagesPanel.Children.Clear();
-                    
+
                     // 处理历史消息
                     foreach (var msgElement in messagesElement.EnumerateArray())
                     {
@@ -590,13 +561,13 @@ namespace XIGUASecurity
                             if (msgDict != null)
                             {
                                 System.Diagnostics.Debug.WriteLine($"处理历史消息: {System.Text.Json.JsonSerializer.Serialize(msgDict)}");
-                                
+
                                 // 检查消息类型
                                 if (msgDict.TryGetValue("type", out var typeObj))
                                 {
-                                    System.Diagnostics.Debug.WriteLine($"历史消息类型: {typeObj.ToString()}");
+                                    System.Diagnostics.Debug.WriteLine($"历史消息类型: {typeObj}");
                                 }
-                                
+
                                 HandleNewMessage(msgDict, isHistory: true);
                             }
                         }
@@ -605,14 +576,14 @@ namespace XIGUASecurity
                             System.Diagnostics.Debug.WriteLine($"处理历史消息失败: {ex.Message}");
                         }
                     }
-                    
+
                     // 滚动到底部
                     ScrollToBottom();
                 }
                 else
                 {
                     System.Diagnostics.Debug.WriteLine("没有收到历史消息");
-                    
+
                     // 添加系统消息提示
                     AddSystemMessage("已连接到服务器，但没有历史消息");
                 }
@@ -627,23 +598,23 @@ namespace XIGUASecurity
         private void HandleNewMessage(Dictionary<string, object> messageDict, bool isHistory = false)
         {
             System.Diagnostics.Debug.WriteLine($"HandleNewMessage被调用，isHistory={isHistory}, 消息内容: {System.Text.Json.JsonSerializer.Serialize(messageDict)}");
-            
+
             // 确保在UI线程上执行
             if (!DispatcherQueue.HasThreadAccess)
             {
                 DispatcherQueue.TryEnqueue(() => HandleNewMessage(messageDict, isHistory));
                 return;
             }
-            
+
             try
             {
                 if (!messageDict.TryGetValue("username", out var usernameObj) ||
                     !messageDict.TryGetValue("type", out var typeObj))
                     return;
-                    
+
                 string username = usernameObj.ToString() ?? "";
                 string type = typeObj.ToString() ?? "";
-                
+
                 // 根据消息类型处理
                 if (type == "file")
                 {
@@ -651,12 +622,12 @@ namespace XIGUASecurity
                     if (!messageDict.TryGetValue("name", out var nameObj) ||
                         !messageDict.TryGetValue("size", out var sizeObj))
                         return;
-                        
+
                     string fileName = nameObj.ToString() ?? "";
                     long fileSize = long.TryParse(sizeObj.ToString(), out long size) ? size : 0;
-                    
+
                     // 获取用户信息
-                    if (messageDict.TryGetValue("user_info", out var fileUserInfoObj) && 
+                    if (messageDict.TryGetValue("user_info", out var fileUserInfoObj) &&
                         fileUserInfoObj is JsonElement fileUserInfoElement)
                     {
                         if (fileUserInfoElement.TryGetProperty("username", out var infoUsernameElement) &&
@@ -664,24 +635,24 @@ namespace XIGUASecurity
                         {
                             string infoUsername = infoUsernameElement.GetString() ?? "";
                             string avatar = avatarElement.GetString() ?? "";
-                            
+
                             if (!string.IsNullOrEmpty(infoUsername) && !string.IsNullOrEmpty(avatar))
                             {
                                 _userAvatars[infoUsername] = avatar;
                             }
                         }
                     }
-                    
+
                     // 获取消息ID
                     string fileId = "";
                     if (messageDict.TryGetValue("id", out var fileIdObj))
                     {
                         fileId = fileIdObj.ToString() ?? "";
                     }
-                    
+
                     // 判断是否是自己发送的文件
                     bool fileIsMe = username == _currentUsername;
-                    
+
                     // 显示文件消息
                     AddFileMessage(fileName, fileSize, username, fileIsMe, fileId);
                     return;
@@ -693,20 +664,20 @@ namespace XIGUASecurity
                         !messageDict.TryGetValue("size", out var sizeObj) ||
                         !messageDict.TryGetValue("file_id", out var fileIdObj))
                         return;
-                        
+
                     string fileName = nameObj.ToString() ?? "";
                     long fileSize = long.TryParse(sizeObj.ToString(), out long size) ? size : 0;
                     string fileId = fileIdObj.ToString() ?? "";
-                    
+
                     // 获取下载URL
                     string downloadUrl = "";
                     if (messageDict.TryGetValue("url", out var urlObj))
                     {
                         downloadUrl = urlObj.ToString() ?? "";
                     }
-                    
+
                     // 获取用户信息
-                    if (messageDict.TryGetValue("user_info", out var fileUserInfoObj) && 
+                    if (messageDict.TryGetValue("user_info", out var fileUserInfoObj) &&
                         fileUserInfoObj is JsonElement fileUserInfoElement)
                     {
                         if (fileUserInfoElement.TryGetProperty("username", out var infoUsernameElement) &&
@@ -714,30 +685,30 @@ namespace XIGUASecurity
                         {
                             string infoUsername = infoUsernameElement.GetString() ?? "";
                             string avatar = avatarElement.GetString() ?? "";
-                            
+
                             if (!string.IsNullOrEmpty(infoUsername) && !string.IsNullOrEmpty(avatar))
                             {
                                 _userAvatars[infoUsername] = avatar;
                             }
                         }
                     }
-                    
+
                     // 判断是否是自己发送的文件
                     bool fileIsMe = username == _currentUsername;
-                    
+
                     // 显示文件消息
                     AddFileMessage(fileName, fileSize, username, fileIsMe, fileId, downloadUrl);
                     return;
                 }
-                
+
                 // 处理普通文本消息
                 if (!messageDict.TryGetValue("content", out var contentObj))
                     return;
-                    
+
                 string content = contentObj.ToString() ?? "";
-                
+
                 // 获取用户信息
-                if (messageDict.TryGetValue("user_info", out var textUserInfoObj) && 
+                if (messageDict.TryGetValue("user_info", out var textUserInfoObj) &&
                     textUserInfoObj is JsonElement textUserInfoElement)
                 {
                     if (textUserInfoElement.TryGetProperty("username", out var infoUsernameElement) &&
@@ -745,51 +716,51 @@ namespace XIGUASecurity
                     {
                         string infoUsername = infoUsernameElement.GetString() ?? "";
                         string avatar = avatarElement.GetString() ?? "";
-                        
+
                         if (!string.IsNullOrEmpty(infoUsername) && !string.IsNullOrEmpty(avatar))
                         {
                             _userAvatars[infoUsername] = avatar;
                         }
                     }
                 }
-                
+
                 // 判断是否是自己发送的消息
                 bool textIsMe = username == _currentUsername;
-                
+
                 // 如果是自己发送的消息且不是历史消息，则不显示（因为已经在发送时显示了）
                 if (textIsMe && !isHistory)
                 {
                     System.Diagnostics.Debug.WriteLine($"跳过显示自己发送的消息: {content}");
                     return;
                 }
-                
+
                 // 获取已读状态
                 int readByCount = 0;
                 int totalUsers = 0;
-                
-                if (messageDict.TryGetValue("read_by_count", out var readByObj) && 
+
+                if (messageDict.TryGetValue("read_by_count", out var readByObj) &&
                     int.TryParse(readByObj.ToString(), out int readCount))
                 {
                     readByCount = readCount;
                 }
-                
-                if (messageDict.TryGetValue("total_users", out var totalUsersObj) && 
+
+                if (messageDict.TryGetValue("total_users", out var totalUsersObj) &&
                     int.TryParse(totalUsersObj.ToString(), out int totalCount))
                 {
                     totalUsers = totalCount;
                 }
-                
+
                 // 添加消息到UI
                 System.Diagnostics.Debug.WriteLine($"准备添加消息到UI: username={username}, isMe={textIsMe}, isHistory={isHistory}");
                 AddMessageWithUser(content, username, textIsMe, isHistory, readByCount, totalUsers);
-                
+
                 // 标记消息为已读
                 if (!isHistory && messageDict.TryGetValue("id", out var idObj))
                 {
                     string messageId = idObj.ToString() ?? "";
                     if (!string.IsNullOrEmpty(messageId))
                     {
-                        _ = Task.Run(async () => 
+                        _ = Task.Run(async () =>
                         {
                             try
                             {
@@ -814,10 +785,10 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => HandleUserOnline(messageDict));
                 return;
             }
-            
+
             if (!messageDict.TryGetValue("username", out var usernameObj))
                 return;
-                
+
             string username = usernameObj.ToString() ?? "";
             AddSystemMessage($"{username} 已上线");
         }
@@ -830,10 +801,10 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => HandleUserOffline(messageDict));
                 return;
             }
-            
+
             if (!messageDict.TryGetValue("username", out var usernameObj))
                 return;
-                
+
             string username = usernameObj.ToString() ?? "";
             AddSystemMessage($"{username} 已下线");
         }
@@ -846,20 +817,20 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => HandleFileMessage(messageDict));
                 return;
             }
-            
+
             if (!messageDict.TryGetValue("id", out var idObj) ||
                 !messageDict.TryGetValue("name", out var nameObj) ||
                 !messageDict.TryGetValue("size", out var sizeObj) ||
                 !messageDict.TryGetValue("username", out var usernameObj))
                 return;
-                
+
             string fileId = idObj.ToString() ?? "";
             string fileName = nameObj.ToString() ?? "";
             long fileSize = long.TryParse(sizeObj.ToString(), out long size) ? size : 0;
             string username = usernameObj.ToString() ?? "";
-            
+
             // 获取用户信息
-            if (messageDict.TryGetValue("user_info", out var userInfoObj) && 
+            if (messageDict.TryGetValue("user_info", out var userInfoObj) &&
                 userInfoObj is JsonElement userInfoElement)
             {
                 if (userInfoElement.TryGetProperty("username", out var infoUsernameElement) &&
@@ -867,17 +838,17 @@ namespace XIGUASecurity
                 {
                     string infoUsername = infoUsernameElement.GetString() ?? "";
                     string avatar = avatarElement.GetString() ?? "";
-                    
+
                     if (!string.IsNullOrEmpty(infoUsername) && !string.IsNullOrEmpty(avatar))
                     {
                         _userAvatars[infoUsername] = avatar;
                     }
                 }
             }
-            
+
             // 判断是否是自己发送的文件
             bool isMe = username == _currentUsername;
-            
+
             // 显示文件消息
             AddFileMessage(fileName, fileSize, username, isMe, fileId);
         }
@@ -892,7 +863,7 @@ namespace XIGUASecurity
                 string messageId = idObj.ToString() ?? "";
                 int readCount = int.TryParse(readCountObj.ToString(), out int rc) ? rc : 0;
                 int totalUsers = int.TryParse(totalUsersObj.ToString(), out int tu) ? tu : 0;
-                
+
                 // 可以在这里更新UI显示已读状态
                 // 例如：UpdateMessageReadStatus(messageId, readCount, totalUsers);
             }
@@ -906,11 +877,11 @@ namespace XIGUASecurity
                 AddSystemMessage($"错误: {errorMessage}");
             }
         }
-        
+
         private void HandleFileDownloadUrl(Dictionary<string, object> messageDict)
         {
             System.Diagnostics.Debug.WriteLine($"HandleFileDownloadUrl被调用: {System.Text.Json.JsonSerializer.Serialize(messageDict)}");
-            
+
             if (!messageDict.TryGetValue("file_id", out var fileIdObj) ||
                 !messageDict.TryGetValue("name", out var nameObj) ||
                 !messageDict.TryGetValue("url", out var urlObj))
@@ -918,13 +889,13 @@ namespace XIGUASecurity
                 System.Diagnostics.Debug.WriteLine("HandleFileDownloadUrl: 缺少必要的字段");
                 return;
             }
-                
+
             string fileId = fileIdObj.ToString() ?? "";
             string fileName = nameObj.ToString() ?? "";
             string downloadUrl = urlObj.ToString() ?? "";
-            
+
             System.Diagnostics.Debug.WriteLine($"准备在浏览器中打开下载链接: {fileName}, URL: {downloadUrl}");
-            
+
             try
             {
                 // 直接在浏览器中打开下载链接
@@ -933,7 +904,7 @@ namespace XIGUASecurity
                     FileName = downloadUrl,
                     UseShellExecute = true
                 });
-                
+
                 AddSystemMessage($"已在浏览器中打开下载链接: {fileName}");
             }
             catch (Exception ex)
@@ -942,81 +913,81 @@ namespace XIGUASecurity
                 AddSystemMessage($"打开浏览器失败: {ex.Message}");
             }
         }
-        
+
         private void HandleFileDownloadStart(Dictionary<string, object> messageDict)
         {
             // 这个方法现在不需要做任何事情，因为进度条已经内嵌在文件消息中
             // 下载进度由HandleFileChunk方法更新
             System.Diagnostics.Debug.WriteLine($"文件下载开始: {System.Text.Json.JsonSerializer.Serialize(messageDict)}");
         }
-        
+
         private void HandleFileChunk(Dictionary<string, object> messageDict)
         {
             System.Diagnostics.Debug.WriteLine($"HandleFileChunk被调用: {System.Text.Json.JsonSerializer.Serialize(messageDict)}");
-            
+
             if (!messageDict.TryGetValue("file_id", out var fileIdObj) ||
                 !messageDict.TryGetValue("chunk_index", out var indexObj) ||
                 !messageDict.TryGetValue("total_chunks", out var totalObj) ||
                 !messageDict.TryGetValue("content", out var contentObj))
                 return;
-                
+
             string fileId = fileIdObj.ToString() ?? "";
             int chunkIndex = int.TryParse(indexObj.ToString(), out int index) ? index : 0;
             int totalChunks = int.TryParse(totalObj.ToString(), out int total) ? total : 1;
             string base64Content = contentObj.ToString() ?? "";
-            
+
             System.Diagnostics.Debug.WriteLine($"处理文件块: {fileId}, 块索引: {chunkIndex}/{totalChunks}");
-            
+
             // 解码文件块
             byte[] chunkData = Convert.FromBase64String(base64Content);
-            
+
             // 存储文件块
             if (!_fileChunks.TryGetValue(fileId, out var chunks))
             {
-                chunks = new List<byte[]>();
+                chunks = [];
                 _fileChunks[fileId] = chunks;
             }
-            
+
             // 确保列表大小足够
             while (chunks.Count <= chunkIndex)
             {
-                chunks.Add(new byte[0]);
+                chunks.Add([]);
             }
-            
+
             // 替换文件块
             chunks[chunkIndex] = chunkData;
-            
+
             // 计算下载进度
             int progress = (int)(((double)(chunkIndex + 1) / totalChunks) * 100);
             if (progress > 100) progress = 100;
-            
+
             System.Diagnostics.Debug.WriteLine($"更新下载进度: {fileId}, {progress}%");
-            
+
             // 更新下载进度
             UpdateFileDownloadProgress(fileId, progress);
         }
-        
+
         private void HandleFileDownloadComplete(Dictionary<string, object> messageDict)
         {
             if (!messageDict.TryGetValue("file_id", out var fileIdObj))
                 return;
-                
+
             string fileId = fileIdObj.ToString() ?? "";
-            
+
             // 更新下载进度为完成
             UpdateFileDownloadProgress(fileId, "下载完成");
-            
+
             // 合并文件块并保存
             MergeAndSaveFile(fileId);
         }
-        
-        private Dictionary<string, List<byte[]>> _fileChunks = new Dictionary<string, List<byte[]>>();
-        
+
+        private readonly Dictionary<string, List<byte[]>> _fileChunks = [];
+
         private void MergeAndSaveFile(string fileId)
         {
             if (!_fileChunks.TryGetValue(fileId, out var chunks))
                 return;
-                
+
             try
             {
                 // 合并所有文件块
@@ -1025,9 +996,9 @@ namespace XIGUASecurity
                 {
                     fileStream.Write(chunk, 0, chunk.Length);
                 }
-                
+
                 byte[] fileBytes = fileStream.ToArray();
-                
+
                 // 获取文件名（从下载进度消息中获取）
                 string fileName = "downloaded_file";
                 if (_downloadStatusTexts.TryGetValue(fileId, out var statusTextBlock))
@@ -1050,7 +1021,7 @@ namespace XIGUASecurity
                         }
                     }
                 }
-                
+
                 // 保存文件到下载目录
                 string downloadsFolder = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
@@ -1058,9 +1029,9 @@ namespace XIGUASecurity
                 Directory.CreateDirectory(downloadsFolder);
                 string filePath = Path.Combine(downloadsFolder, fileName);
                 File.WriteAllBytes(filePath, fileBytes);
-                
+
                 AddSystemMessage($"文件已下载到: {filePath}");
-                
+
                 // 打开文件所在目录
                 var psi = new System.Diagnostics.ProcessStartInfo
                 {
@@ -1069,7 +1040,7 @@ namespace XIGUASecurity
                 var safePath = filePath.Replace("\"", "\\\"");
                 psi.Arguments = $"/select,\"{safePath}\"";
                 System.Diagnostics.Process.Start(psi);
-                
+
                 // 清理文件块
                 _fileChunks.Remove(fileId);
             }
@@ -1099,7 +1070,7 @@ namespace XIGUASecurity
             stackPanel.Children.Add(new TextBlock { Text = "用户名:" });
             var usernameBox = new TextBox { PlaceholderText = "请输入用户名" };
             stackPanel.Children.Add(usernameBox);
-            
+
             dialog.Content = stackPanel;
 
             // 处理连接按钮点击
@@ -1112,7 +1083,7 @@ namespace XIGUASecurity
                     usernameBox.PlaceholderText = "用户名不能为空";
                     return;
                 }
-                
+
                 try
                 {
                     if (_tcpClient != null)
@@ -1135,14 +1106,14 @@ namespace XIGUASecurity
         private void AddMessageWithUser(string content, string username, bool isMe, bool isHistory = false, int readByCount = 0, int totalUsers = 0)
         {
             System.Diagnostics.Debug.WriteLine($"AddMessageWithUser被调用: content={content}, username={username}, isMe={isMe}, isHistory={isHistory}");
-            
+
             // 确保在UI线程上执行
             if (!DispatcherQueue.HasThreadAccess)
             {
                 DispatcherQueue.TryEnqueue(() => AddMessageWithUser(content, username, isMe, isHistory));
                 return;
             }
-            
+
             // 创建消息容器
             var container = new StackPanel
             {
@@ -1162,9 +1133,6 @@ namespace XIGUASecurity
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(0, 0, 0, 8)
             };
-
-            // 在实际应用中，这里可以加载头像图片
-            // 由于是示例，我们使用首字母作为头像
             var avatarText = new TextBlock
             {
                 Text = username.Length > 0 ? username[0].ToString().ToUpper() : "?",
@@ -1202,6 +1170,7 @@ namespace XIGUASecurity
             {
                 Text = content,
                 TextWrapping = TextWrapping.Wrap,
+                IsTextSelectionEnabled = true,
                 Foreground = (Brush)Application.Current.Resources["TextFillColorPrimaryBrush"]
             };
             messageStack.Children.Add(contentText);
@@ -1221,7 +1190,7 @@ namespace XIGUASecurity
             }
 
             messageBubble.Child = messageStack;
-            
+
             // 根据是否是自己发送的消息决定头像和消息气泡的顺序
             if (isMe)
             {
@@ -1239,7 +1208,7 @@ namespace XIGUASecurity
             System.Diagnostics.Debug.WriteLine($"准备将消息添加到MessagesPanel，当前子元素数量: {MessagesPanel.Children.Count}");
             MessagesPanel.Children.Add(container);
             System.Diagnostics.Debug.WriteLine($"消息已添加到MessagesPanel，新的子元素数量: {MessagesPanel.Children.Count}");
-            
+
             ScrollToBottom();
         }
 
@@ -1251,7 +1220,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => AddSystemMessage(message));
                 return;
             }
-            
+
             var container = new StackPanel
             {
                 Margin = new Thickness(0, 4, 0, 4),
@@ -1279,7 +1248,7 @@ namespace XIGUASecurity
             ScrollToBottom();
         }
 
-        private void AddFileMessage(string fileName, long fileSize, string username, bool isMe, string fileId, string downloadUrl = null)
+        private void AddFileMessage(string fileName, long fileSize, string username, bool isMe, string fileId, string? downloadUrl = null)
         {
             // 确保在UI线程上执行
             if (!DispatcherQueue.HasThreadAccess)
@@ -1287,7 +1256,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => AddFileMessage(fileName, fileSize, username, isMe, fileId, downloadUrl));
                 return;
             }
-            
+
             // 创建消息容器
             var container = new StackPanel
             {
@@ -1308,7 +1277,7 @@ namespace XIGUASecurity
                 Margin = new Thickness(0, 0, 0, 8)
             };
 
-    
+
             var avatarText = new TextBlock
             {
                 Text = username.Length > 0 ? username[0].ToString().ToUpper() : "?",
@@ -1318,7 +1287,7 @@ namespace XIGUASecurity
             };
 
             avatar.Child = avatarText;
-            
+
             // 创建文件卡片
             var card = new Border
             {
@@ -1382,12 +1351,12 @@ namespace XIGUASecurity
                 {
                     System.Diagnostics.Debug.WriteLine($"下载文件按钮被点击: {fileName}, fileId: {fileId}");
                     System.Diagnostics.Debug.WriteLine($"下载URL: {downloadUrl}");
-                    
+
                     // 直接在浏览器中打开下载链接
                     if (!string.IsNullOrEmpty(downloadUrl))
                     {
                         System.Diagnostics.Debug.WriteLine($"在浏览器中打开下载链接: {downloadUrl}");
-                        
+
                         try
                         {
                             // 使用默认浏览器打开下载链接
@@ -1396,7 +1365,7 @@ namespace XIGUASecurity
                                 FileName = downloadUrl,
                                 UseShellExecute = true
                             });
-                            
+
                             AddSystemMessage($"下载链接已在浏览器中打开: {fileName}");
                         }
                         catch (Exception ex)
@@ -1426,7 +1395,7 @@ namespace XIGUASecurity
             rootGrid.Children.Add(btn);
 
             card.Child = rootGrid;
-            
+
             // 根据是否是自己发送的消息决定头像和消息卡片的顺序
             if (isMe)
             {
@@ -1453,7 +1422,7 @@ namespace XIGUASecurity
                 DispatcherQueue.TryEnqueue(() => ScrollToBottom(force));
                 return;
             }
-            
+
             if (force || ChatScroll.VerticalOffset == ChatScroll.ScrollableHeight)
                 ChatScroll.ChangeView(null, ChatScroll.ScrollableHeight, null);
         }
@@ -1478,12 +1447,9 @@ namespace XIGUASecurity
                 return;
 
             InputBox.Text = "";
-            
-            // 立即显示自己发送的消息
-            // 即使_currentUsername为空也显示消息，使用默认用户名
             string displayUsername = !string.IsNullOrEmpty(_currentUsername) ? _currentUsername : "我";
             AddMessageWithUser(text, displayUsername, isMe: true, readByCount: 1, totalUsers: 1);
-            
+
             await _tcpClient.SendMessageAsync(text);
         }
 
@@ -1502,7 +1468,7 @@ namespace XIGUASecurity
             {
                 await _tcpClient.DisconnectAsync();
             }
-            
+
             await InitializeTCPClientAsync();
         }
 
@@ -1557,17 +1523,17 @@ namespace XIGUASecurity
                         {
                             await _tcpClient.DisconnectAsync();
                         }
-                        
+
                         // 保存设置
                         await _tcpClient.SetUsernameAsync(usernameBox.Text);
-                        
+
                         if (int.TryParse(portBox.Text, out int port))
                         {
                             await _tcpClient.SetServerAsync(hostBox.Text, port);
                         }
-                        
+
                         AddSystemMessage("设置已保存，正在重新连接...");
-                        
+
                         // 重新连接
                         await _tcpClient.ConnectAsync();
                     }
@@ -1593,11 +1559,11 @@ namespace XIGUASecurity
                 {
                     AddSystemMessage("已离开反馈频道");
                 }
-                
+
                 _tcpClient?.DisconnectAsync().Wait(1000);
             }
             catch { }
-            
+
             _tcpClient = null;
         }
         #endregion
