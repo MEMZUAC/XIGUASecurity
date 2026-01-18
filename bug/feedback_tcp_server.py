@@ -323,6 +323,12 @@ class FeedbackTCPServer:
         self.http_server = None
         self.http_thread = None
         
+        # 敏感词违规记录 {username: [timestamps]}
+        self.sensitive_word_violations: Dict[str, List[float]] = {}
+        
+        # 禁言用户记录 {username: [unmute_timestamps]}
+        self.muted_users: Dict[str, List[float]] = {}
+        
         # 确保数据目录存在
         os.makedirs(self.data_dir, exist_ok=True)
         
@@ -554,10 +560,109 @@ class FeedbackTCPServer:
         """处理客户端发送的消息"""
         username = self.clients[writer]["username"]
         
+        # 检查用户是否被禁言
+        current_time = time.time()
+        if self.is_user_muted(username, current_time):
+            # 返回禁言提示
+            response = {
+                "type": "system_message",
+                "content": "您已被禁言，请稍后再试。",
+                "timestamp": datetime.now().isoformat()
+            }
+            try:
+                response_data = json.dumps(response, ensure_ascii=False).encode('utf-8')
+                self.send_message(writer, response_data)
+            except Exception as e:
+                logger.error(f"发送禁言提示失败: {e}")
+            return None
+        
         # 生成消息ID（基于内容和时间戳，避免重复）
         content = message_data.get("content", "").strip()
         if not content:
             return None  # 忽略空消息
+        
+        # 检测敏感词
+        if self.contains_sensitive_words(content):
+            logger.info(f"用户 {username} 尝试发送敏感内容: {content[:50]}...")
+            
+            # 向发送敏感词的用户返回错误消息
+            error_response = {
+                "type": "error",
+                "content": "该内容包含不适宜内容，请更换描述后再发送。",
+                "timestamp": datetime.now().isoformat()
+            }
+            
+            # 找到发送者的连接并发送错误消息
+            for client_addr, client_info in self.clients.items():
+                if client_info["username"] == username:
+                    try:
+                        response_data = json.dumps(error_response).encode('utf-8')
+                        response_length = len(response_data).to_bytes(4, byteorder='big')
+                        writer = client_info["writer"]
+                        writer.write(response_length + response_data)
+                        await writer.drain()
+                        logger.info(f"已向用户 {username} 发送敏感词错误消息")
+                    except Exception as e:
+                        logger.error(f"向用户 {username} 发送错误消息失败: {e}")
+                    break
+            
+            # 记录敏感词发送次数
+            current_time = time.time()
+            if username not in self.sensitive_word_violations:
+                self.sensitive_word_violations[username] = []
+            
+            # 添加当前违规时间，并移除超过1分钟的记录
+            self.sensitive_word_violations[username].append(current_time)
+            self.sensitive_word_violations[username] = [t for t in self.sensitive_word_violations[username] if current_time - t < 60]
+            
+            # 创建系统消息并保存到消息列表
+            system_message = {
+                "id": f"system_{int(time.time())}",
+                "content": f"用户 {username} 尝试发送不当内容",
+                "username": "Server",
+                "timestamp": datetime.now().isoformat(),
+                "type": "system"
+            }
+            
+            # 保存系统消息到消息列表
+            self.messages[system_message["id"]] = system_message
+            self.read_status[system_message["id"]] = set()  # 系统消息不需要已读状态
+            
+            # 检查是否需要禁言
+            violation_count = len(self.sensitive_word_violations[username])
+            if violation_count >= 3:
+                # 禁言1分钟
+                if username not in self.muted_users:
+                    self.muted_users[username] = []
+                self.muted_users[username].append(current_time + 60)  # 1分钟后解除禁言
+                
+                # 创建禁言的系统消息
+                mute_message = {
+                    "id": f"system_{int(time.time())}",
+                    "content": f"用户 {username} 因多次发送不当内容被禁言1分钟",
+                    "username": "Server",
+                    "timestamp": datetime.now().isoformat(),
+                    "type": "system"
+                }
+                
+                # 保存禁言消息到消息列表
+                self.messages[mute_message["id"]] = mute_message
+                self.read_status[mute_message["id"]] = set()
+                
+                # 保存数据
+                self.save_data()
+                
+                # 广播所有新消息
+                await self.broadcast_message(system_message)
+                await self.broadcast_message(mute_message)
+            else:
+                # 保存数据
+                self.save_data()
+                
+                # 广播系统消息
+                await self.broadcast_message(system_message)
+            
+            return None
         
         # 创建消息哈希以检测重复
         message_hash = hashlib.md5(f"{username}{content}{int(time.time()//10)}".encode()).hexdigest()
@@ -635,7 +740,24 @@ class FeedbackTCPServer:
         """向特定客户端发送消息"""
         if writer.is_closing():
             return False
-            
+    
+    def is_user_muted(self, username, current_time):
+        """检查用户是否被禁言"""
+        if username not in self.muted_users:
+            return False
+        
+        # 移除已过期的禁言记录
+        self.muted_users[username] = [t for t in self.muted_users[username] if t > current_time]
+        
+        # 如果还有未过期的禁言记录，则用户被禁言
+        return len(self.muted_users[username]) > 0
+    
+    async def broadcast_message(self, message):
+        """广播消息并保存到JSON文件"""
+        await self.broadcast(message)
+    
+    async def send_message(self, writer, message):
+        """发送消息到指定客户端"""
         try:
             message_bytes = TCPMessageProtocol.encode_message(message)
             writer.write(message_bytes)
@@ -988,6 +1110,50 @@ class FeedbackTCPServer:
             logger.info("HTTP文件服务器已启动，监听 http://103.118.245.82:8889")
         except Exception as e:
             logger.error(f"启动HTTP服务器失败: {e}")
+    
+    def contains_sensitive_words(self, text):
+        """检测文本是否包含敏感词"""
+        import re
+        
+        # 转换为小写进行检测，提高检测准确性
+        lower_text = text.lower()
+        
+        # 定义敏感词列表（使用正则表达式模式，避免误判）
+        sensitive_patterns = [
+            # 侮辱性词汇（完整匹配）
+            r'\b傻逼\b', r'\b白痴\b', r'\b废物\b', r'\b垃圾\b', r'\b蠢货\b', r'\b脑残\b', r'\b智障\b',
+            r'\b贱人\b', r'\b人渣\b', r'\b狗东西\b', r'\b婊子\b', r'\b娘炮\b', r'\b死妈\b',
+            
+            # 淫秽词汇（完整匹配，避免误判如"操作"、"曹操"等）
+            r'\b操你\b', r'\b肏你\b', r'\b干你\b', r'\b日你\b', r'\b操妈\b', r'\b操你妈\b', r'\b干你妈\b', r'\b日你妈\b',
+            r'\b性交\b', r'\b做爱\b', r'\b阴茎\b', r'\b阴道\b', r'\b阴部\b', r'\b性器\b', r'\b自慰\b', r'\b手淫\b', 
+            r'\b淫荡\b', r'\b骚货\b', r'\b妓女\b', r'\b鸡巴\b', r'\b逼\b', 
+            
+            # 英文敏感词（完整匹配）
+            r'\bfuck\b', r'\bshit\b', r'\bbitch\b', r'\bcunt\b', r'\bdick\b', r'\bpussy\b',
+            r'\bwhore\b', r'\bslut\b', r'\basshole\b', r'\bbastard\b', r'\bdamn\b',
+            
+            # 其他不当内容（完整匹配）
+            r'\b毒品\b', r'\b大麻\b', r'\b海洛因\b', r'\b冰毒\b', r'\b摇头丸\b', r'\bk粉\b',
+            r'\b赌博\b', r'\b赌场\b', r'\b博彩\b', r'\b六合彩\b', r'\b老虎机\b'
+        ]
+        
+        # 检查是否包含敏感词模式
+        for pattern in sensitive_patterns:
+            if re.search(pattern, lower_text):
+                return True
+        
+        # 检查是否包含手机号码格式
+        phone_pattern = re.compile(r'1[3-9]\d{9}')
+        if phone_pattern.search(lower_text):
+            return True
+        
+        # 检查是否包含QQ号格式（5-12位数字）
+        qq_pattern = re.compile(r'\b\d{5,12}\b')
+        if qq_pattern.search(lower_text):
+            return True
+        
+        return False
     
     def stop_http_server(self):
         """停止HTTP服务器"""

@@ -21,6 +21,10 @@ namespace XIGUASecurity
         private readonly Dictionary<string, ProgressBar> _downloadProgressBars = [];
         private readonly Dictionary<string, TextBlock> _downloadProgressTexts = [];
         private readonly Dictionary<string, TextBlock> _downloadStatusTexts = [];
+        private DispatcherTimer? _refreshTimer; // 添加定时器用于自动刷新消息
+        private bool _isAutoRefresh = false; // 标记是否是自动刷新操作
+        private DateTime _lastServerMessageTime = DateTime.Now; // 记录最后一次收到服务器消息的时间
+        private readonly Queue<string> _pendingMessages = []; // 待发送的消息队列
 
 
         public BugReportPage()
@@ -31,6 +35,7 @@ namespace XIGUASecurity
                 try
                 {
                     await InitializeTCPClientAsync();
+                    InitializeRefreshTimer();
                 }
                 catch (Exception ex)
                 {
@@ -49,7 +54,7 @@ namespace XIGUASecurity
 
             // 使用系统账户名作为用户名
             string systemUsername = Environment.UserName;
-            if (string.IsNullOrEmpty(_tcpClient.Username) || _tcpClient.Username != systemUsername)
+            if (_tcpClient != null && (string.IsNullOrEmpty(_tcpClient.Username) || _tcpClient.Username != systemUsername))
             {
                 try
                 {
@@ -64,50 +69,105 @@ namespace XIGUASecurity
             }
 
             // 订阅事件
-            _tcpClient.OnConnected += (sender, message) =>
+            if (_tcpClient != null)
             {
-                DispatcherQueue.TryEnqueue(() =>
+                _tcpClient.OnConnected += (sender, message) => 
                 {
-                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_Connected");
-                    // 不在这里添加连接消息，让HandleRegisterSuccess处理历史消息显示
-                    // AddSystemMessage(message);
-                });
+                    // 自动刷新时不显示连接状态
+                    // 完全不处理，避免UI显示任何状态变化
+                };
+
+                _tcpClient.OnDisconnected += (sender, message) =>
+                {
+                    // 自动刷新时不显示断开连接状态
+                // 完全不处理，避免UI显示任何状态变化
             };
 
-            _tcpClient.OnDisconnected += (sender, message) =>
-            {
-                DispatcherQueue.TryEnqueue(() =>
+                _tcpClient.OnMessageReceived += async (sender, messageDict) =>
                 {
-                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_Disconnected");
-                    AddSystemMessage(message);
-                });
-            };
+                    await HandleReceivedMessageAsync(messageDict);
+                };
 
-            _tcpClient.OnMessageReceived += async (sender, messageDict) =>
-            {
-                await HandleReceivedMessageAsync(messageDict);
-            };
-
-            _tcpClient.OnError += (sender, error) =>
-            {
-                DispatcherQueue.TryEnqueue(() =>
+                _tcpClient.OnError += async (sender, error) =>
                 {
-                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailed");
-                    AddSystemMessage(WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailedMessage") + error);
-                });
-            };
+                    // 只有在非自动刷新时才显示连接错误
+                    if (!_isAutoRefresh)
+                    {
+                        // 检查是否是解码错误
+                        if (error.Contains("解码消息异常"))
+                        {
+                            // 解码错误已经在TCP客户端中处理，这里不显示
+                            return;
+                        }
+                    
+                    // 检查是否是正常的连接关闭消息
+                    if (error.Contains("线程退出") || error.Contains("应用程序请求") || error.Contains("已中止 I/O 操作"))
+                    {
+                        // 正常的连接关闭，不显示错误
+                        return;
+                    }
+                    
+                    // 检查是否是重连失败消息
+                    if (error.Contains("未连接到服务器，重连失败"))
+                    {
+                        // 重连失败消息，显示但不更新状态
+                        DispatcherQueue.TryEnqueue(() =>
+                        {
+                            AddSystemMessage("连接已断开，正在尝试重新连接...");
+                        });
+                        return;
+                    }
+                    
+                    DispatcherQueue.TryEnqueue(() =>
+                    {
+                        StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailed");
+                        AddSystemMessage(WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailedMessage") + error);
+                    });
+                    
+                    // 如果是连接错误，等待600毫秒后尝试重连
+                    if (error.Contains("连接") || error.Contains("断开"))
+                    {
+                        await Task.Delay(600);
+                        // 不自动重连，让用户手动点击连接按钮
+                    }
+                }
+                };
+            }
 
             // 尝试连接
-            await _tcpClient.ConnectAsync();
+            if (_tcpClient != null)
+            {
+                await _tcpClient.ConnectAsync();
+            }
         }
 
         private async Task HandleReceivedMessageAsync(Dictionary<string, object> messageDict)
         {
-            if (!messageDict.TryGetValue("type", out var typeObj))
-                return;
+            try
+            {
+                if (messageDict == null)
+                {
+                    System.Diagnostics.Debug.WriteLine("收到空消息，忽略");
+                    return;
+                }
 
-            string type = typeObj.ToString() ?? "";
-            System.Diagnostics.Debug.WriteLine($"收到消息类型: {type}");
+                if (!messageDict.TryGetValue("type", out var typeObj))
+                {
+                    System.Diagnostics.Debug.WriteLine("消息中没有type字段，忽略");
+                    return;
+                }
+
+                string type = typeObj?.ToString() ?? "";
+                if (string.IsNullOrEmpty(type))
+                {
+                    System.Diagnostics.Debug.WriteLine("消息type为空，忽略");
+                    return;
+                }
+
+                System.Diagnostics.Debug.WriteLine($"收到消息类型: {type}");
+
+            // 更新最后收到服务器消息的时间
+            _lastServerMessageTime = DateTime.Now;
 
             DispatcherQueue.TryEnqueue(() =>
             {
@@ -156,6 +216,15 @@ namespace XIGUASecurity
                         HandleReadStatusUpdate(messageDict);
                         break;
 
+                    case "system_message":
+                        HandleSystemMessage(messageDict);
+                        break;
+
+                    case "refresh_trigger":
+                        // 处理服务端发送的刷新触发消息
+                        HandleRefreshTrigger();
+                        break;
+
                     case "error":
                         HandleErrorMessage(messageDict);
                         break;
@@ -165,6 +234,12 @@ namespace XIGUASecurity
                         break;
                 }
             });
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"处理接收到的消息时出错: {ex.Message}");
+                // 不向用户显示错误，避免干扰用户体验
+            }
         }
 
         private void AddFileUploadMessage(string fileName, long fileSize, string username, string messageId)
@@ -587,6 +662,18 @@ namespace XIGUASecurity
                     // 添加系统消息提示
                     AddSystemMessage("已连接到服务器，但没有历史消息");
                 }
+                
+                // 处理待发送的消息队列
+                if (_pendingMessages.Count > 0)
+                {
+                    System.Diagnostics.Debug.WriteLine($"连接成功，处理 {_pendingMessages.Count} 条待发送消息");
+                    _ = Task.Run(async () =>
+                    {
+                        // 等待一小段时间确保连接完全稳定
+                        await Task.Delay(500);
+                        await ProcessPendingMessagesAsync();
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -869,11 +956,82 @@ namespace XIGUASecurity
             }
         }
 
+        private void HandleSystemMessage(Dictionary<string, object> messageDict)
+        {
+            if (messageDict.TryGetValue("content", out var contentObj))
+            {
+                string content = contentObj.ToString() ?? "";
+                string sender = "系统";
+                
+                // 检查是否有发送者信息
+                if (messageDict.TryGetValue("sender", out var senderObj))
+                {
+                    sender = senderObj.ToString() ?? "系统";
+                }
+                
+                // 如果是服务器消息，显示发送者名称
+                if (sender == "Server")
+                {
+                    AddSystemMessage($"[Server] {content}");
+                }
+                else
+                {
+                    AddSystemMessage(content);
+                }
+            }
+        }
+
+        private void HandleRefreshTrigger()
+        {
+            // 处理服务端发送的刷新触发消息
+            // 标记为自动刷新操作，避免显示连接状态
+            _isAutoRefresh = true;
+            
+            // 断开并重新连接以获取最新消息
+            _ = Task.Run(async () =>
+            {
+                try
+                {
+                    if (_tcpClient != null)
+                    {
+                        await _tcpClient.DisconnectAsync();
+                        await Task.Delay(600); // 等待600毫秒
+                        await _tcpClient.ConnectAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"刷新触发重连失败: {ex.Message}");
+                }
+                finally
+                {
+                    // 重置标志
+                    DispatcherQueue.TryEnqueue(() => _isAutoRefresh = false);
+                }
+            });
+            
+            // 模拟收到register_success消息来刷新历史消息
+            var refreshMessageDict = new Dictionary<string, object>
+            {
+                ["type"] = "register_success",
+                ["users"] = new List<Dictionary<string, object>>(),
+                ["messages"] = new List<Dictionary<string, object>>()
+            };
+            
+            // 调用HandleRegisterSuccess来刷新历史消息
+            HandleRegisterSuccess(refreshMessageDict);
+        }
+
         private void HandleErrorMessage(Dictionary<string, object> messageDict)
         {
-            if (messageDict.TryGetValue("message", out var msgObj))
+            if (messageDict.TryGetValue("content", out var msgObj))
             {
                 string errorMessage = msgObj.ToString() ?? "";
+                AddSystemMessage(errorMessage);
+            }
+            else if (messageDict.TryGetValue("message", out var msgObj2))
+            {
+                string errorMessage = msgObj2.ToString() ?? "";
                 AddSystemMessage($"错误: {errorMessage}");
             }
         }
@@ -1129,7 +1287,7 @@ namespace XIGUASecurity
                 Width = 32,
                 Height = 32,
                 CornerRadius = new CornerRadius(16),
-                Background = new SolidColorBrush(Microsoft.UI.Colors.LightGray),
+                Background = (Brush)Application.Current.Resources["SystemControlBackgroundAccentBrush"],
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(0, 0, 0, 8)
             };
@@ -1138,7 +1296,8 @@ namespace XIGUASecurity
                 Text = username.Length > 0 ? username[0].ToString().ToUpper() : "?",
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 16
+                FontSize = 16,
+                Foreground = (Brush)Application.Current.Resources["SystemControlForegroundChromeWhiteBrush"]
             };
 
             avatar.Child = avatarText;
@@ -1423,8 +1582,24 @@ namespace XIGUASecurity
                 return;
             }
 
-            if (force || ChatScroll.VerticalOffset == ChatScroll.ScrollableHeight)
-                ChatScroll.ChangeView(null, ChatScroll.ScrollableHeight, null);
+            // 总是滚动到底部，确保新消息可见
+            ChatScroll.ChangeView(null, ChatScroll.ScrollableHeight, null);
+        }
+        
+        private void RemoveLastMessage()
+        {
+            // 确保在UI线程上执行
+            if (!DispatcherQueue.HasThreadAccess)
+            {
+                DispatcherQueue.TryEnqueue(RemoveLastMessage);
+                return;
+            }
+            
+            // 移除最后一条消息
+            if (MessagesPanel.Children.Count > 0)
+            {
+                MessagesPanel.Children.RemoveAt(MessagesPanel.Children.Count - 1);
+            }
         }
         #endregion
 
@@ -1436,9 +1611,9 @@ namespace XIGUASecurity
 
         private async Task SendBtn_ClickAsync()
         {
-            if (_tcpClient == null || !_tcpClient.IsConnected)
+            if (_tcpClient == null)
             {
-                AddSystemMessage("未连接到服务器");
+                AddSystemMessage("TCP客户端未初始化");
                 return;
             }
 
@@ -1450,7 +1625,40 @@ namespace XIGUASecurity
             string displayUsername = !string.IsNullOrEmpty(_currentUsername) ? _currentUsername : "我";
             AddMessageWithUser(text, displayUsername, isMe: true, readByCount: 1, totalUsers: 1);
 
-            await _tcpClient.SendMessageAsync(text);
+            // 将消息添加到待发送队列
+            _pendingMessages.Enqueue(text);
+            
+            // 尝试发送队列中的消息
+            await ProcessPendingMessagesAsync();
+        }
+
+        private async Task ProcessPendingMessagesAsync()
+        {
+            // 如果TCP客户端未连接，不尝试发送
+            if (_tcpClient == null || !_tcpClient.IsConnected)
+            {
+                System.Diagnostics.Debug.WriteLine($"TCP客户端未连接，消息已加入队列，当前队列中有 {_pendingMessages.Count} 条消息");
+                return;
+            }
+
+            // 处理队列中的所有消息
+            while (_pendingMessages.Count > 0)
+            {
+                string message = _pendingMessages.Peek();
+                try
+                {
+                    await _tcpClient.SendMessageAsync(message);
+                    // 发送成功，从队列中移除
+                    _pendingMessages.Dequeue();
+                    System.Diagnostics.Debug.WriteLine($"消息发送成功，队列中剩余 {_pendingMessages.Count} 条消息");
+                }
+                catch (Exception ex)
+                {
+                    // 发送失败，不从队列中移除，等待下次重试
+                    System.Diagnostics.Debug.WriteLine($"消息发送失败: {ex.Message}");
+                    break;
+                }
+            }
         }
 
         private void InputBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -1469,6 +1677,8 @@ namespace XIGUASecurity
                 await _tcpClient.DisconnectAsync();
             }
 
+            // 确保这不是自动刷新操作
+            _isAutoRefresh = false;
             await InitializeTCPClientAsync();
         }
 
@@ -1549,11 +1759,131 @@ namespace XIGUASecurity
         }
         #endregion
 
+        #region 自动刷新
+        private void InitializeRefreshTimer()
+        {
+            _refreshTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(4) // 每4秒钟执行一次
+            };
+            
+            _refreshTimer.Tick += async (sender, e) =>
+            {
+                try
+                {
+                    // 只刷新消息，不显示连接状态变化
+                    if (_tcpClient != null)
+                    {
+                        // 标记为自动刷新操作
+                        _isAutoRefresh = true;
+                        
+                        // 尝试连接以刷新消息
+                        await _tcpClient.ConnectAsync();
+                        
+                        // 如果连接成功且有待发送消息，处理它们
+                        if (_tcpClient.IsConnected && _pendingMessages.Count > 0)
+                        {
+                            await ProcessPendingMessagesAsync();
+                        }
+                        
+                        // 重置标志
+                        _isAutoRefresh = false;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // 忽略连接错误，不显示错误消息
+                    System.Diagnostics.Debug.WriteLine($"自动刷新连接失败: {ex.Message}");
+                    _isAutoRefresh = false; // 确保重置标志
+                }
+            };
+            
+            _refreshTimer.Start();
+            
+            // 添加连接状态检测定时器
+            var connectionCheckTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(3000) // 每3秒检查一次
+            };
+            
+            // 连接失败计数器
+            int connectionFailureCount = 0;
+            
+            // 连接状态锁，防止状态快速切换
+            bool isUpdatingStatus = false;
+            
+            connectionCheckTimer.Tick += (sender, e) =>
+            {
+                // 防止状态更新冲突
+                if (isUpdatingStatus)
+                    return;
+                    
+                // 每3秒执行一次重新连接，模拟点击重新连接按钮
+                if (_tcpClient != null)
+                {
+                    isUpdatingStatus = true;
+                    
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await _tcpClient.DisconnectAsync();
+                            await Task.Delay(1000); // 增加等待时间到1秒
+                            await _tcpClient.ConnectAsync();
+                            
+                            // 连接成功，重置失败计数器
+                            connectionFailureCount = 0;
+                            
+                            // 如果有待发送消息，处理它们
+                            if (_pendingMessages.Count > 0)
+                            {
+                                await ProcessPendingMessagesAsync();
+                            }
+                            
+                            // 更新状态为已连接
+                            DispatcherQueue.TryEnqueue(() =>
+                            {
+                                StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_Connected");
+                                isUpdatingStatus = false;
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            connectionFailureCount++;
+                            System.Diagnostics.Debug.WriteLine($"自动重连失败 {connectionFailureCount} 次: {ex.Message}");
+                            
+                            // 只有连续失败3次才显示连接失败状态
+                            if (connectionFailureCount >= 3)
+                            {
+                                DispatcherQueue.TryEnqueue(() =>
+                                {
+                                    StatusTxt.Text = WinUI3Localizer.Localizer.Get().GetLocalizedString("BugReportPage_ConnectionFailed");
+                                    AddSystemMessage("连接失败，请检查网络或稍后再试");
+                                    isUpdatingStatus = false;
+                                });
+                            }
+                            else
+                            {
+                                // 失败但未达到3次，不更新状态
+                                isUpdatingStatus = false;
+                            }
+                        }
+                    });
+                }
+            };
+            
+            connectionCheckTimer.Start();
+        }
+        #endregion
+
         #region 清理
         private void Cleanup()
         {
             try
             {
+                // 停止定时器
+                _refreshTimer?.Stop();
+                
                 // 如果之前已连接，显示离开反馈频道的提示
                 if (_tcpClient != null && _tcpClient.IsConnected)
                 {
@@ -1567,5 +1897,6 @@ namespace XIGUASecurity
             _tcpClient = null;
         }
         #endregion
+
     }
 }
